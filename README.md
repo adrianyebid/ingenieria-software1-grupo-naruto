@@ -25,7 +25,7 @@ La estructura del repositorio está organizada de la siguiente manera:
 ## 👥 Integrantes del Grupo
 
 - [@adrianyebid](https://github.com/adrianyebid) – Adrián Yebid
-- [@miembro2](https://github.com/miembro2) – Nombre del segundo miembro
+- [@Maicol-Ortiz](https://github.com/Maicol-Ortiz) – Michael Andres Ortiz Bernal
 - [@miembro3](https://github.com/miembro3) – Nombre del tercer miembro
 - [@miembro4](https://github.com/miembro4) – Nombre del cuarto miembro
 
