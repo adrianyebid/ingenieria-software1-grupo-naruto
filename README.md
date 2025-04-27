@@ -27,7 +27,8 @@ La estructura del repositorio está organizada de la siguiente manera:
 - [@adrianyebid](https://github.com/adrianyebid) – Adrián Yebid Rincon
 - [@Maicol-Ortiz](https://github.com/Maicol-Ortiz) – Michael Andres Ortiz Bernal
 - [@jruizgu](https://github.com/jruizgu) – Juan Esteban Ruiz Guasca 
-- [@miembro4](https://github.com/miembro4) – Nombre del cuarto miembro
+- [@Jhonny0523](https://github.com/Jhonny0523) –
+Jhonatan Bolívar Laverde 
 
 ## 🚀 Cómo utilizar este repositorio
 
