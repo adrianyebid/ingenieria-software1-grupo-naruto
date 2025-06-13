@@ -29,7 +29,22 @@ El sistema se diferencia de otras soluciones en que está enfocado en:
 
 ---
 
-## 📁 Estructura del Repositorio
+## 📁 Estructura del repositorio
 
-La organización de carpetas sigue el esquema definido en clase para mantener claridad en los entregables.
+La estructura del repositorio está organizada de la siguiente manera:
 
+
+### 📂 Descripción de carpetas y archivos
+
+- **Documentación/**: Contiene todos los documentos relacionados con el proyecto y las tareas.
+  - **Historias_de_Usuario/**: Archivos PDF con historias de usuario generadas por los miembros del grupo.
+  - **Casos_de_uso/**: Archivos PDF con casos de uso correspondientes.
+  - **Proyecto/**: Documentos técnicos relacionados con el desarrollo del proyecto (diagrama, script de implementación, etc.).
+  - **Diagramas/**: Diagramas relacionados con la estructura y diseño del proyecto.
+  
+- **Asignaciones/**: Carpeta que contiene las tareas, talleres y entregas del curso.
+  - **Tarea_##_<nickname>.pdf**: Tareas individuales del grupo.
+  - **Tarea_##.pdf**: Tareas grupales.
+  - **Taller_<tema>.pdf**: Talleres realizados durante el curso.
+
+- **Proyecto/**: Contendrá todos los archivos relacionados con el desarrollo y la implementación del proyecto final. La estructura de esta carpeta dependerá de la tecnología y metodología que utilicemos.
