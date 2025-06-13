@@ -7,7 +7,7 @@ Grupo: **Naruto 🍥**
 
 ## 📌 Descripción del Proyecto y Objetivo
 
-**Bogotravel** es una aplicación de escritorio desarrollada en JavaFX que permite a los usuarios llevar un registro personal de sus viajes y experiencias en lugares turísticos de la ciudad de Bogotá.
+**Bogotravel** es una aplicación de escritorio desarrollada en Java que permite a los usuarios llevar un registro personal de sus viajes y experiencias en lugares turísticos de la ciudad de Bogotá.
 
 El objetivo principal del sistema es ofrecer una forma sencilla, visual y organizada de documentar viajes, subir fotos, planear próximas visitas, generar reportes y personalizar la experiencia del usuario sin depender de conexión a internet.
 
