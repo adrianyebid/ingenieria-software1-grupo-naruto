@@ -34,5 +34,6 @@ Jhonatan Bolívar Laverde
 
 Para clonar este repositorio en tu máquina local:
 
-```bash
+bash
 git clone https://github.com/adrianyebid/ingenieria-software1-grupo-naruto.git
+
