@@ -1,7 +1,7 @@
 # 🗺️ Bogotravel – Diario Personal de Viajes en Bogotá
 
 Repositorio del proyecto final de la materia **Ingeniería de Software 1** – Universidad Nacional de Colombia.  
-Grupo: **Naruto 🍥**
+Grupo: **Naruto Dattebayo 🍥**
 
 ---
 
