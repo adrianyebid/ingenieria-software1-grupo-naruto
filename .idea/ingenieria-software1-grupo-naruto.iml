@@ -4,6 +4,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" exported="" name="javafx.base" level="application" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
