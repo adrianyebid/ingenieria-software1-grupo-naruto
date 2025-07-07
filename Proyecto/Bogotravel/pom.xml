@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.bogotravel</groupId>
@@ -16,6 +16,7 @@
     </properties>
 
     <dependencies>
+
         <!-- PostgreSQL JDBC Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -23,31 +24,31 @@
             <version>42.7.3</version>
         </dependency>
 
-        <!-- BCrypt (para hashear contraseñas) -->
+        <!-- BCrypt para contraseñas -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
 
-        <!-- JavaFX  -->
+        <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
+            <version>21</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
+            <version>21</version> <!-- Solo si usas FXML -->
         </dependency>
+
     </dependencies>
 
-    <!-- Solo si usas JavaFX -->
     <build>
         <plugins>
+
+            <!-- Plugin para ejecutar JavaFX -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -56,6 +57,8 @@
                     <mainClass>bogotravel.Main</mainClass>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
+
 </project>
