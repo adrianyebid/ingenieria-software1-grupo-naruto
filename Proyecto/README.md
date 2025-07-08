@@ -7,21 +7,23 @@ Grupo: **Naruto Dattebayo 🍥**
 
 ## 📌 Descripción del Proyecto y Objetivo
 
-**Bogotravel** es una aplicación de escritorio desarrollada en JavaFX que permite a los usuarios llevar un registro personal de sus viajes y experiencias en lugares turísticos de la ciudad de Bogotá.
+**Bogotravel** es una aplicación de escritorio desarrollada en **Java 11+ con JavaFX** que permite a los usuarios llevar un registro personal de sus viajes y experiencias en lugares turísticos de la ciudad de Bogotá.
 
-El objetivo principal del sistema es ofrecer una forma sencilla, visual y organizada de documentar viajes, subir fotos, planear próximas visitas, generar reportes y personalizar la experiencia del usuario sin depender de conexión a internet.
+### 🎯 Objetivo
+Ofrecer una solución **offline**, amigable y funcional para documentar viajes, subir fotos, planear próximas visitas y consultar estadísticas o recomendaciones basadas en la experiencia del usuario.
 
-El sistema se diferencia de otras soluciones en que está enfocado en:
-- La **experiencia local y personal** de viaje.
-- Su uso **totalmente offline**.
-- La capacidad de guardar **archivos personales y fotos** asociadas a cada visita.
+### 🔍 Diferenciación
+- Enfoque en **experiencias locales y personales**.
+- **100% funcional sin conexión a internet**.
+- Organización de visitas y fotos por usuario.
+- Integración con PostgreSQL y cifrado de contraseñas.
 
 ---
 
 ## 👥 Integrantes del Grupo
 
-- [@adrianyebid](https://github.com/adrianyebid) – **Adrián Yebid Rincon** – ✉️ adrianyr@unal.edu.co
-- [@Maicol-Ortiz](https://github.com/Maicol-Ortiz) – **Michael Andres Ortiz Bernal**
+- [@adrianyebid](https://github.com/adrianyebid) – **Adrián Yebid Rincón** – ✉️ adrianyr@unal.edu.co
+- [@Maicol-Ortiz](https://github.com/Maicol-Ortiz) – **Michael Andrés Ortiz Bernal**
 - [@jruizgu](https://github.com/jruizgu) – **Juan Esteban Ruiz Guasca**
 - [@Jhonny0523](https://github.com/Jhonny0523) – **Jhonatan Bolívar Laverde**
 
@@ -29,7 +31,41 @@ El sistema se diferencia de otras soluciones en que está enfocado en:
 
 ---
 
-## 📁 Estructura del Repositorio
+## 🧩 Estructura del Proyecto
+bogotravel/
+├── controller/ # Controladores JavaFX (vista y lógica de UI)
+├── dao/ # Acceso a datos y persistencia
+├── db/ # Clase de conexión a PostgreSQL
+├── model/ # Clases modelo (Usuario, Entrada, Lugar, etc.)
+├── sesion/ # Gestión de sesión actual
+├── resources/ # Archivos FXML (interfaz visual)
+└── Main.java # Clase principal del proyecto
 
-La organización de carpetas sigue el esquema definido en clase para mantener claridad en los entregables.
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+| Herramienta       | Descripción                                     |
+|-------------------|-------------------------------------------------|
+| Java 11+          | Lenguaje principal                              |
+| JavaFX            | Interfaz gráfica del sistema                    |
+| PostgreSQL        | Base de datos relacional                        |
+| JDBC              | Acceso a base de datos                          |
+| Maven             | Gestión de dependencias                         |
+| JBCrypt           | Cifrado de contraseñas                          |
+| JUnit             | Pruebas unitarias de funcionalidad              |
+
+---
+
+## ⚙️ Requisitos de instalación y ejecución
+
+### 🧬 Clona el proyecto
+
+```bash
+git clone https://github.com/adrianyebid/ingenieria-software1-grupo-naruto.git
+
+
+
+
 
