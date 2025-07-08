@@ -27,7 +27,7 @@ public class UsuarioController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        Usuario usuario = new Usuario(0, nombre, email, username, password);
+        Usuario usuario = new Usuario(0, nombre, email, password);
         boolean exito = usuarioDAO.registrar(usuario);
 
         Alert alert = new Alert(exito ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
@@ -44,7 +44,6 @@ public class UsuarioController {
 
         if (usuario != null) {
             nombreField.setText(usuario.getNombre());
-            usernameField.setText(usuario.getUsername());
             passwordField.setText(usuario.getPassword());
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario encontrado.");
             alert.showAndWait();

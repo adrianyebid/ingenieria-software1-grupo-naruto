@@ -25,9 +25,9 @@ public class LugarTuristicoDAO {
                 LugarTuristico lugar = new LugarTuristico(
                         resultSet.getInt("id"),
                         resultSet.getString("nombre"),
-                        resultSet.getString("tipo"),
                         resultSet.getString("descripcion"),
-                        resultSet.getString("localidad")
+                        resultSet.getString("localidad"),
+                        resultSet.getInt("id_categoria")  // Nuevo campo
                 );
                 lugares.add(lugar);
             }
@@ -52,9 +52,9 @@ public class LugarTuristicoDAO {
                 return new LugarTuristico(
                         resultSet.getInt("id"),
                         resultSet.getString("nombre"),
-                        resultSet.getString("tipo"),
                         resultSet.getString("descripcion"),
-                        resultSet.getString("localidad")
+                        resultSet.getString("localidad"),
+                        resultSet.getInt("id_categoria") // Nuevo campo
                 );
             }
 
@@ -66,14 +66,14 @@ public class LugarTuristicoDAO {
 
     // Insertar nuevo lugar turístico
     public boolean insertar(LugarTuristico lugar) {
-        String sql = "INSERT INTO lugares_turisticos (nombre, tipo, descripcion, localidad) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO lugares_turisticos (nombre, descripcion, localidad, id_categoria) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, lugar.getNombre());
-            statement.setString(2, lugar.getTipo());
-            statement.setString(3, lugar.getDescripcion());
-            statement.setString(4, lugar.getLocalidad());
+            statement.setString(2, lugar.getDescripcion());
+            statement.setString(3, lugar.getLocalidad());
+            statement.setInt(4, lugar.getIdCategoria());
 
             return statement.executeUpdate() > 0;
 

@@ -2,8 +2,10 @@ package bogotravel.dao;
 
 import bogotravel.db.DBConnection;
 import bogotravel.model.PorVisitar;
+import bogotravel.utils.PorVisitarInfo;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,37 @@ public class PorVisitarDAO {
 
         } catch (SQLException e) {
             System.out.println("Error al listar lugares por visitar: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+    public List<PorVisitarInfo> listarConNombrePorUsuario(String emailUsuario) {
+        List<PorVisitarInfo> lista = new ArrayList<>();
+
+        String sql = "SELECT lt.nombre AS lugar_nombre, pv.prioridad, pv.recordatorio "
+                + "FROM por_visitar pv "
+                + "JOIN lugares_turisticos lt ON pv.id_lugar = lt.id "
+                + "WHERE pv.email_usuario = ? "
+                + "ORDER BY pv.prioridad ASC;";
+
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, emailUsuario);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String nombreLugar = resultSet.getString("lugar_nombre");
+                int prioridad = resultSet.getInt("prioridad");
+                LocalDate recordatorio = resultSet.getDate("recordatorio").toLocalDate();
+
+                lista.add(new PorVisitarInfo(nombreLugar, prioridad, recordatorio));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener lugares por visitar con nombre: " + e.getMessage());
         }
 
         return lista;
