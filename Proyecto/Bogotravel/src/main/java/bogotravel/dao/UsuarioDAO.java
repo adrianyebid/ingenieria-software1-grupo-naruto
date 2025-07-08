@@ -2,6 +2,7 @@ package bogotravel.dao;
 
 import bogotravel.db.DBConnection;
 import bogotravel.model.Usuario;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,17 +13,20 @@ public class UsuarioDAO {
 
     // Registrar un nuevo usuario
     public boolean registrar(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nombre, email, username, password) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)";
+
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
+            // Hashear la contraseña ANTES de guardarla
+            String passwordHasheado = BCrypt.hashpw(usuario.getPassword(), BCrypt.gensalt());
+
             statement.setString(1, usuario.getNombre());
             statement.setString(2, usuario.getEmail());
-            statement.setString(3, usuario.getUsername());
-            statement.setString(4, usuario.getPassword()); // Toca hashear esto xd
+            statement.setString(3, passwordHasheado);  // Guardamos el hash, no el texto plano
 
             int filas = statement.executeUpdate();
-            return filas > 0; // para saber si se insertó correctamente
+            return filas > 0;
 
         } catch (SQLException e) {
             System.out.println("Error al registrar usuario: " + e.getMessage());
@@ -44,7 +48,6 @@ public class UsuarioDAO {
                         resultSet.getInt("id"),
                         resultSet.getString("nombre"),
                         resultSet.getString("email"),
-                        resultSet.getString("username"),
                         resultSet.getString("password")
                 );
             }
@@ -59,9 +62,8 @@ public class UsuarioDAO {
     public boolean validarCredenciales(String email, String passwordPlano) {
         Usuario usuario = buscarPorEmail(email);
         if (usuario != null) {
-            // Aquí debemos hashear el passwordPlano y compararlo con el hasheado en la base de datos
-            // return BCrypt.checkpw(passwordPlano, usuario.getPassword());
-            return usuario.getPassword().equals(passwordPlano); // Solo si no hasheas
+            // Compara el password plano con el password cifrado en la BD
+            return BCrypt.checkpw(passwordPlano, usuario.getPassword());
         }
         return false;
     }

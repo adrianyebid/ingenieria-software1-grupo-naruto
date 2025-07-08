@@ -11,7 +11,7 @@ public class EntradaDAO {
 
     // Insertar una nueva entrada
     public boolean crear(Entrada entrada) {
-        String sql = "INSERT INTO entradas (titulo, contenido, fecha_visita, id_lugar, email_usuario) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO entradas (titulo, contenido, fecha_visita, lugar_descripcion, email_usuario) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -19,7 +19,7 @@ public class EntradaDAO {
             statement.setString(1, entrada.getTitulo());
             statement.setString(2, entrada.getContenido());
             statement.setDate(3, Date.valueOf(entrada.getFechaVisita()));
-            statement.setInt(4, entrada.getIdLugar());
+            statement.setString(4, entrada.getLugarDescripcion()); // puede ser null
             statement.setString(5, entrada.getEmailUsuario());
 
             return statement.executeUpdate() > 0;
@@ -47,7 +47,7 @@ public class EntradaDAO {
                         resultSet.getString("titulo"),
                         resultSet.getString("contenido"),
                         resultSet.getDate("fecha_visita").toLocalDate(),
-                        resultSet.getInt("id_lugar"),
+                        resultSet.getString("lugar_descripcion"),
                         resultSet.getString("email_usuario")
                 );
                 entradas.add(e);
@@ -76,7 +76,7 @@ public class EntradaDAO {
                         resultSet.getString("titulo"),
                         resultSet.getString("contenido"),
                         resultSet.getDate("fecha_visita").toLocalDate(),
-                        resultSet.getInt("id_lugar"),
+                        resultSet.getString("lugar_descripcion"),
                         resultSet.getString("email_usuario")
                 );
             }
@@ -86,6 +86,27 @@ public class EntradaDAO {
         }
 
         return null;
+    }
+
+    // Actualizar entrada
+    public boolean actualizar(Entrada entrada) {
+        String sql = "UPDATE entradas SET titulo = ?, contenido = ?, fecha_visita = ?, lugar_descripcion = ? WHERE id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, entrada.getTitulo());
+            statement.setString(2, entrada.getContenido());
+            statement.setDate(3, Date.valueOf(entrada.getFechaVisita()));
+            statement.setString(4, entrada.getLugarDescripcion());
+            statement.setInt(5, entrada.getId());
+
+            return statement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar entrada: " + e.getMessage());
+            return false;
+        }
     }
 
     // Eliminar entrada por ID
@@ -103,6 +124,4 @@ public class EntradaDAO {
             return false;
         }
     }
-
-
 }

@@ -7,28 +7,35 @@ public class Entrada {
     private String titulo;
     private String contenido;
     private LocalDate fechaVisita;
-    private int idLugar;           // FK (puede ser NULL si el lugar no es de la tabla)
-    private String emailUsuario;   // FK hacia usuarios (por email)
-
+    private String lugarDescripcion;   // nuevo campo
+    private String emailUsuario;
 
     public Entrada() {}
 
     // Constructor sin id (para insertar)
-    public Entrada(String titulo, String contenido, LocalDate fechaVisita, int idLugar, String emailUsuario) {
+    public Entrada(String titulo, String contenido, LocalDate fechaVisita, String lugarDescripcion , String emailUsuario) {
         this.titulo = titulo;
         this.contenido = contenido;
         this.fechaVisita = fechaVisita;
-        this.idLugar = idLugar;
+        this.lugarDescripcion = lugarDescripcion;
+        this.emailUsuario = emailUsuario;
+    }
+    // Constructor sin lugarDescripcion (para insertar sin este campo)
+    public Entrada(String titulo, String contenido, LocalDate fechaVisita, String emailUsuario) {
+        this.titulo = titulo;
+        this.contenido = contenido;
+        this.fechaVisita = fechaVisita;
         this.emailUsuario = emailUsuario;
     }
 
+
     // Constructor completo
-    public Entrada(int id, String titulo, String contenido, LocalDate fechaVisita, int idLugar, String emailUsuario) {
+    public Entrada(int id, String titulo, String contenido, LocalDate fechaVisita, String lugarDescripcion, String emailUsuario) {
         this.id = id;
         this.titulo = titulo;
         this.contenido = contenido;
         this.fechaVisita = fechaVisita;
-        this.idLugar = idLugar;
+        this.lugarDescripcion = lugarDescripcion;
         this.emailUsuario = emailUsuario;
     }
 
@@ -64,12 +71,12 @@ public class Entrada {
         this.fechaVisita = fechaVisita;
     }
 
-    public int getIdLugar() {
-        return idLugar;
+    public String getLugarDescripcion() {
+        return lugarDescripcion;
     }
 
-    public void setIdLugar(int idLugar) {
-        this.idLugar = idLugar;
+    public void setLugarDescripcion(String lugarDescripcion) {
+        this.lugarDescripcion = lugarDescripcion;
     }
 
     public String getEmailUsuario() {

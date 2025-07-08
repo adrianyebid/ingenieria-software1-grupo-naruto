@@ -4,25 +4,22 @@ public class Usuario {
     private int id;
     private String nombre;
     private String email;
-    private String username;
     private String password;
 
     public Usuario() {}
 
     // Constructor completo
-    public Usuario(int id, String nombre, String email, String username, String password) {
+    public Usuario(int id, String nombre, String email, String password) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
-        this.username = username;
         this.password = password;
     }
 
     // Constructor sin id (para inserción)
-    public Usuario(String nombre, String email, String username, String password) {
+    public Usuario(String nombre, String email, String password) {
         this.nombre = nombre;
         this.email = email;
-        this.username = username;
         this.password = password;
     }
 
@@ -48,14 +45,6 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
