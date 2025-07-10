@@ -14,8 +14,6 @@ public class UsuarioController {
     @FXML
     private TextField emailField;
     @FXML
-    private TextField usernameField;
-    @FXML
     private PasswordField passwordField;
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
@@ -24,7 +22,6 @@ public class UsuarioController {
     private void registrarUsuario() {
         String nombre = nombreField.getText();
         String email = emailField.getText();
-        String username = usernameField.getText();
         String password = passwordField.getText();
 
         Usuario usuario = new Usuario(0, nombre, email, password);

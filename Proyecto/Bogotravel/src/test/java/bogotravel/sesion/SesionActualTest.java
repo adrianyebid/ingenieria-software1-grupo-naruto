@@ -13,7 +13,7 @@ public class SesionActualTest {
 
     @Test
     void testIniciarSesion() {
-        Usuario usuario = new Usuario("Juan", "juan@email.com", "juan123", "password123");
+        Usuario usuario = new Usuario(9,"juan", "juanito@gmail.com", "password123");
         SesionActual.iniciarSesion(usuario);
         assertTrue(SesionActual.estaLogueado());
         assertEquals(usuario, SesionActual.getUsuario());
@@ -21,7 +21,7 @@ public class SesionActualTest {
 
     @Test
     void testCerrarSesion() {
-        Usuario usuario = new Usuario("Ana", "ana@email.com", "ana123", "password456");
+        Usuario usuario = new Usuario(6,"Ana", "ana@email.com", "password456");
         SesionActual.iniciarSesion(usuario);
         SesionActual.cerrarSesion();
         assertFalse(SesionActual.estaLogueado());
