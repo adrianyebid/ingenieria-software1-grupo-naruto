@@ -2,10 +2,15 @@ package bogotravel.controller;
 
 import bogotravel.dao.UsuarioDAO;
 import bogotravel.model.Usuario;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class UsuarioController {
 
@@ -24,7 +29,7 @@ public class UsuarioController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        Usuario usuario = new Usuario(0, nombre, email, password);
+        Usuario usuario = new Usuario(nombre, email, password);
         boolean exito = usuarioDAO.registrar(usuario);
 
         Alert alert = new Alert(exito ? Alert.AlertType.INFORMATION : Alert.AlertType.ERROR);
@@ -47,6 +52,25 @@ public class UsuarioController {
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Usuario no encontrado.");
             alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void handleLogin() {
+        String email = emailField.getText();
+        String password = passwordField.getText();
+
+        if (usuarioDAO.validarCredenciales(email, password)) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/InicioView.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/UsuarioView.fxml"));
+                Stage stage = (Stage) emailField.getScene().getWindow();
+                stage.setScene(new Scene(root));
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Error al cargar la vista: " + e.getMessage());
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Credenciales inválidas. Por favor, inténtelo de nuevo.");
         }
     }
 }
