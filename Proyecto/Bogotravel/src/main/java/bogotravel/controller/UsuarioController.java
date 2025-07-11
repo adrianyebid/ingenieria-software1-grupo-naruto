@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -21,6 +22,10 @@ public class UsuarioController {
     private TextField emailField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private Button IniciarButton;
+    @FXML
+    private Button RegistrarButton;
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
@@ -39,7 +44,7 @@ public class UsuarioController {
     }
 
     @FXML
-    private void registrarUsuario() {
+    private void registrarUsuario(ActionEvent event) {
         String nombre = nombreField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
@@ -71,7 +76,7 @@ public class UsuarioController {
     }
 
     @FXML
-    private void handleLogin() {
+    private void IniciarUsuario(ActionEvent event) {
         String email = emailField.getText();
         String password = passwordField.getText();
 
@@ -79,10 +84,11 @@ public class UsuarioController {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/InicioView.fxml"));
                 //FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/UsuarioView.fxml"));
-                Stage stage = (Stage) emailField.getScene().getWindow();
+                Stage stage = (Stage) IniciarButton.getScene().getWindow();
                 stage.setScene(new Scene(root));
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Error al cargar la vista: " + e.getMessage());
+                alert.showAndWait();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Credenciales inválidas. Por favor, inténtelo de nuevo.");

@@ -50,7 +50,7 @@
          <Font name="Candara Bold" size="16.0" />
       </font></PasswordField>
 
-    <Button layoutX="222.0" layoutY="433.0" onAction="#registrarUsuario" prefHeight="46.0" prefWidth="100.0" text="Registrar">
+    <Button fx:id="RegistrarButton" layoutX="222.0" layoutY="433.0" onAction="#registrarUsuario" prefHeight="46.0" prefWidth="100.0" text="Registrar">
       <font>
          <Font name="Candara Bold" size="16.0" />
       </font>
@@ -64,7 +64,7 @@
             </input>
          </SepiaTone>
       </effect></Button>
-   <Button layoutX="342.0" layoutY="433.0" onAction="#handleLogin" prefHeight="46.0" prefWidth="150.0" text="Iniciar Sesión">
+   <Button fx:id="IniciarButton" layoutX="342.0" layoutY="433.0" onAction="#IniciarUsuario" prefHeight="46.0" prefWidth="150.0" text="Iniciar Sesión">
       <font>
          <Font name="Candara Bold" size="16.0" />
       </font>
