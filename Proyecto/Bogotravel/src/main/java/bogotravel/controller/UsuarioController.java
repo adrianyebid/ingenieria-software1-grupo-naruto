@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class UsuarioController {
@@ -22,6 +23,20 @@ public class UsuarioController {
     private PasswordField passwordField;
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+
+    public void verificarCargaImagen() {
+        try {
+            Image imagen = new Image(getClass().getResourceAsStream("src/main/resources/Images/imagen_2.jpg"));
+            if (imagen.isError()) {
+                System.out.println("Error al cargar la imagen: " + imagen.getException().getMessage());
+            } else {
+                System.out.println("La imagen se cargó correctamente.");
+            }
+        } catch (Exception e) {
+            System.out.println("Excepción al cargar la imagen: " + e.getMessage());
+        }
+    }
 
     @FXML
     private void registrarUsuario() {
