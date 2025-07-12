@@ -71,4 +71,29 @@ public class FotoEntradaDAO {
             return false;
         }
     }
+
+    public FotoEntrada buscarPorId(int id) {
+        String sql = "SELECT * FROM fotos_entrada WHERE id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return new FotoEntrada(
+                        rs.getInt("id"),
+                        rs.getInt("entrada_id"),
+                        rs.getString("ruta")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al buscar foto: " + e.getMessage());
+        }
+
+        return null;
+    }
+
 }

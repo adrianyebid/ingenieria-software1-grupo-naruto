@@ -61,4 +61,26 @@ public class FotoEntradaService {
 
         return archivos;
     }
+
+    public boolean eliminarFotoCompleta(int fotoId) {
+        FotoEntradaDAO dao = new FotoEntradaDAO();
+        FotoEntrada foto = dao.buscarPorId(fotoId);
+
+        if (foto == null) {
+            System.out.println("No se encontró la foto con id " + fotoId);
+            return false;
+        }
+
+        // Intentar borrar el archivo del disco
+        File archivo = new File(foto.getRuta());
+        if (archivo.exists()) {
+            if (!archivo.delete()) {
+                System.out.println("No se pudo eliminar el archivo: " + archivo.getPath());
+            }
+        }
+
+        // Luego eliminar de la base de datos
+        return dao.eliminar(fotoId);
+    }
+
 }
