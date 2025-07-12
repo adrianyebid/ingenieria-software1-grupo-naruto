@@ -30,7 +30,7 @@ public class InicioController {
     @FXML
     private void BuscarAction(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/EntradaView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/LuagrTuristicoView.fxml"));
             Stage stage = (Stage) EntradaButton.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class InicioController {
     @FXML
     private void AñadirVisita(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/EntradaView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/PorVisitarView.fxml"));
             Stage stage = (Stage) EntradaButton.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (Exception e) {
