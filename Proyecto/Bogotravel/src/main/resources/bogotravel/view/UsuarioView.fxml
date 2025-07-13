@@ -5,8 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.ColorAdjust?>
-<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,87 +13,89 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="635.0" prefWidth="911.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bogotravel.controller.UsuarioController">
-    <Label layoutX="20.0" layoutY="211.0" text="Nombre:">
+<AnchorPane fx:id="rootPane" prefHeight="635.0" prefWidth="911.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bogotravel.controller.UsuarioController">
+   <Pane id="Pane1" layoutX="14.0" layoutY="184.0" prefHeight="294.0" prefWidth="514.0">
+      <children>
+          <TextField fx:id="nombreField" layoutX="149.0" layoutY="28.0" prefHeight="40.0" prefWidth="279.0" promptText="Santiago..." style="-fx-background-color: e1d9a9;">
+              <font>
+                  <Font name="Rockwell Condensed" size="20.0" />
+              </font>
+            <cursor>
+               <Cursor fx:constant="DEFAULT" />
+            </cursor>
+          </TextField>
+      </children></Pane>
+    <Label layoutX="23.0" layoutY="204.0" text="Nombre:">
         <font>
-            <Font name="Onyx" size="41.0" />
+            <Font name="Rockwell Condensed" size="41.0" />
         </font>
     </Label>
-    <TextField fx:id="nombreField" layoutX="161.0" layoutY="214.0" prefHeight="40.0" prefWidth="243.0" promptText="Santiago..." style="-fx-background-color: e1d9a9;">
-        <font>
-            <Font name="Candara Bold" size="16.0" />
-        </font>
-      <cursor>
-         <Cursor fx:constant="DEFAULT" />
-      </cursor>
-    </TextField>
 
-    <Label layoutX="23.0" layoutY="303.0" prefHeight="25.0" prefWidth="73.0" text="Correo:">
+    <Label layoutX="23.0" layoutY="303.0" prefHeight="45.0" prefWidth="91.0" text="Correo:">
       <font>
-         <Font name="Onyx" size="41.0" />
+         <Font name="Rockwell Condensed" size="37.0" />
       </font></Label>
-    <TextField fx:id="emailField" layoutX="161.0" layoutY="309.0" prefHeight="40.0" prefWidth="243.0" promptText="nombre@gmail.com" style="-fx-background-color: e1d9a9;">
+    <TextField fx:id="emailField" layoutX="161.0" layoutY="309.0" prefHeight="40.0" prefWidth="279.0" promptText="nombre@gmail.com" style="-fx-background-color: e1d9a9;">
       <font>
          <Font name="Candara Bold" size="16.0" />
       </font></TextField>
 
-    <Label layoutX="23.0" layoutY="399.0" text="Contraseña:">
+    <Label layoutX="23.0" layoutY="399.0" prefHeight="50.0" prefWidth="152.0" text="Contraseña:">
       <font>
          <Font name="Onyx" size="41.0" />
       </font></Label>
-    <PasswordField fx:id="passwordField" layoutX="161.0" layoutY="402.0" prefHeight="40.0" prefWidth="243.0" promptText=".........." style="-fx-background-color: e1d9a9;">
+    <PasswordField fx:id="passwordField" layoutX="161.0" layoutY="402.0" prefHeight="40.0" prefWidth="279.0" promptText=".........." style="-fx-background-color: e1d9a9;">
       <font>
          <Font name="Candara Bold" size="16.0" />
       </font></PasswordField>
 
-    <Button fx:id="RegistrarButton" layoutX="306.0" layoutY="524.0" onAction="#registrarUsuario" prefHeight="46.0" prefWidth="91.0" style="-fx-background-color: e1d9a9;" text="Registrar">
+    <Button id="Button2" fx:id="RegistrarButton" layoutX="320.0" layoutY="524.0" onAction="#registrarUsuario" prefHeight="46.0" prefWidth="152.0" styleClass="StyleButton1" text="Registrar">
+      <font>
+         <Font name="Candara Bold" size="16.0" />
+      </font>
+      <cursor>
+         <Cursor fx:constant="DISAPPEAR" />
+      </cursor></Button>
+   <Button id="Button1" fx:id="IniciarButton" layoutX="85.0" layoutY="524.0" onAction="#IniciarUsuario" prefHeight="46.0" prefWidth="152.0" style="" styleClass="StyleButton1" text="Iniciar Sesión">
       <font>
          <Font name="Candara Bold" size="16.0" />
       </font>
       <cursor>
          <Cursor fx:constant="DISAPPEAR" />
       </cursor>
-      <effect>
-         <SepiaTone>
-            <input>
-               <ColorAdjust brightness="-0.21" contrast="0.02" hue="0.74" saturation="-0.02" />
-            </input>
-         </SepiaTone>
-      </effect></Button>
-   <Button id="IniciarButton" fx:id="IniciarButton" layoutX="161.0" layoutY="524.0" onAction="#IniciarUsuario" prefHeight="46.0" prefWidth="115.0" style="" styleClass="IniciarButton" text="Iniciar Sesión">
-      <font>
-         <Font name="Candara Bold" size="16.0" />
-      </font>
-      <cursor>
-         <Cursor fx:constant="DISAPPEAR" />
-      </cursor>
-      <effect>
-         <SepiaTone>
-            <input>
-               <ColorAdjust brightness="-0.21" contrast="0.02" hue="0.74" saturation="-0.02" />
-            </input>
-         </SepiaTone>
-      </effect>
    </Button>
-   <Label layoutX="76.0" layoutY="41.0" prefHeight="112.0" prefWidth="286.0" text="BOGOTRAVEL">
+   <Label layoutX="128.0" layoutY="36.0" prefHeight="112.0" prefWidth="286.0" text="BOGOTRAVEL">
       <font>
-         <Font name="Onyx" size="85.0" />
+         <Font name="Rockwell Condensed" size="65.0" />
       </font>
    </Label>
-   <Pane layoutX="438.0" layoutY="-4.0" prefHeight="641.0" prefWidth="473.0" style="-fx-background-color: #e5dba2;">
+   <Pane layoutX="553.0" layoutY="-4.0" prefHeight="641.0" prefWidth="358.0" style="-fx-background-color: #e5dba2;">
       <children>
-         <ImageView fitHeight="427.0" fitWidth="381.0" layoutX="46.0" layoutY="110.0" opacity="0.86" style="-fx-border-radius: 5px; -fx-border-insets: 5px;">
+         <ImageView fx:id="miImagen" fitHeight="515.0" fitWidth="485.0" layoutX="-66.0" layoutY="35.0" opacity="0.86">
             <image>
                 <Image url="@../../Images/imagen_2.jpg" />
             </image>
             <effect>
-               <SepiaTone level="0.58">
-                  <input>
-                     <Glow level="0.0" />
-                  </input>
-               </SepiaTone>
+               <SepiaTone level="0.26" />
             </effect>
          </ImageView>
       </children>
+      <effect>
+         <GaussianBlur radius="0.0" />
+      </effect>
    </Pane>
+   <Label fx:id="welcomeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="472.0" prefHeight="46.0" prefWidth="209.0" text="!Bienvenido¡" />
+   <Label layoutX="41.0" layoutY="65.0" text="★">
+      <font>
+         <Font size="37.0" />
+      </font>
+   </Label>
+   <Label layoutX="454.0" layoutY="65.0" text="★">
+      <font>
+         <Font size="37.0" />
+      </font>
+      <effect>
+         <GaussianBlur radius="0.0" />
+      </effect>
+   </Label>
 </AnchorPane>
