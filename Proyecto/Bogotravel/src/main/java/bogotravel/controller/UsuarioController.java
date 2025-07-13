@@ -57,7 +57,7 @@ public class UsuarioController {
         welcomeLabel.setVisible(false);
 
         // Crear estrella como clip
-        Polygon estrella = crearEstrella(250, 300, 220, 110, 5);
+        Polygon estrella = crearEstrella(280, 300, 240, 130, 5);
         miImagen.setClip(estrella);
 
         // Animar crecimiento de la estrella

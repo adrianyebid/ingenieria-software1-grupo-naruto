@@ -49,13 +49,14 @@
 }
 
 #Pane1 {
-    -fx-background-color:  #e5dba2; /* Amarillo claro */
-    -fx-text-fill: black;
-    -fx-font-weight: bold;
+    -fx-background-color: #dddbc5; /* Amarillo claro */
     -fx-background-radius: 10;
-    -fx-cursor: hand;
     -fx-padding: 10 20 10 20;
-    -fx-font-size: 14px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 2, 2);
-    -fx-transition: all 0.3s ease-in-out;
 }
+
+#Pane2 {
+    -fx-background-color: #ffffff; /* Amarillo claro */
+    -fx-background-radius: 10;
+    -fx-padding: 10 20 10 20;
+}
+
