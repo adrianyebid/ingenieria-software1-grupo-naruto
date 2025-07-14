@@ -14,7 +14,7 @@
             <Button id="PorVisitarButton" text="Añadir lugar" />
             <Button id="EntradaButton" text="Crear entrada" />
             <Button id="PerfilButton" text="Ver perfil" />
-            <Button id="CerrarButton" text="Cerrar sesión" />
+            <Button id="CerrarButton" text="Cerrar sesión" onAction="#cerrarSesion" />
         </VBox>
     </left>
     <center>

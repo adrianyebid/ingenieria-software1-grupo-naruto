@@ -1,6 +1,8 @@
 package bogotravel.controller;
 
 import bogotravel.dao.UsuarioDAO;
+import bogotravel.model.Usuario;
+import bogotravel.sesion.SesionActual;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,13 +21,20 @@ import java.util.List;
 
 public class LoginController {
 
-    @FXML private TextField emailField;
-    @FXML private PasswordField passwordField;
-    @FXML private Label welcomeLabel;
-    @FXML private AnchorPane rootPane;
-    @FXML private Button loginButton;
-    @FXML private ImageView miImagen;
-    @FXML private Pane starsPane;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private Label welcomeLabel;
+    @FXML
+    private AnchorPane rootPane;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private ImageView miImagen;
+    @FXML
+    private Pane starsPane;
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     private List<Label> estrellas = new ArrayList<>();
@@ -42,7 +51,20 @@ public class LoginController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
+        if (email.isEmpty() || password.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Por favor ingrese su correo y contraseña.").showAndWait();
+            return;
+        }
+
+
         if (usuarioDAO.validarCredenciales(email, password)) {
+
+            Usuario usuario = usuarioDAO.buscarPorEmail(email);
+
+            //iniciar sesión con el usuario encontrado
+            SesionActual.iniciarSesion(usuario);
+
+
             lanzarEstrellasDesdeBoton(loginButton, 10);
 
             showWelcomeAnimation(() -> {

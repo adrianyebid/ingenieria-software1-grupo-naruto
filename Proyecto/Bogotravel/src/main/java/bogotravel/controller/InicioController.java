@@ -2,6 +2,8 @@ package bogotravel.controller;
 
 import bogotravel.dao.LugarTuristicoDAO;
 import bogotravel.model.LugarTuristico;
+import bogotravel.model.Usuario;
+import bogotravel.sesion.SesionActual;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +34,21 @@ public class InicioController {
     private final LugarTuristicoDAO lugarDAO = new LugarTuristicoDAO();
 
     public void initialize() {
+
+        // Verificar si hay un usuario autenticado
+        Usuario actual = SesionActual.getUsuario();
+        if (actual == null) {
+            // No hay usuario autenticado, volver al login
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/LoginView.fxml"));
+                Stage stage = (Stage) scrollPane.getScene().getWindow();
+                stage.setScene(new Scene(root));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
         List<LugarTuristico> lugares = lugarDAO.listarTodos();
         for (LugarTuristico lugar : lugares) {
             lugaresContainer.getChildren().add(crearVistaLugar(lugar));
@@ -65,4 +82,22 @@ public class InicioController {
         box.getChildren().addAll(imagen, nombre,localidad,descripcion);
         return box;
     }
+
+    @FXML
+    private void cerrarSesion() {
+        // 1. Cerrar la sesión
+        SesionActual.cerrarSesion();
+
+        // 2. Cargar la vista del login
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/LoginView.fxml"));
+            Stage stage = (Stage) scrollPane.getScene().getWindow();  // Puedes usar cualquier nodo de la escena
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+            new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR,
+                    "No se pudo volver a la vista de inicio de sesión.").showAndWait();
+        }
+    }
+
 }
