@@ -34,7 +34,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/UsuarioView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/RegistroView.fxml"));
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add("css/Inicio.css");
         primaryStage.setScene(scene);
