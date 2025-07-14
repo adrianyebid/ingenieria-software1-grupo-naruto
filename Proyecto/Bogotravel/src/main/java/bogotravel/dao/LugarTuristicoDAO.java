@@ -86,4 +86,123 @@ public class LugarTuristicoDAO {
             return false;
         }
     }
+
+
+    // Buscar por categoría
+    public List<LugarTuristico> listarPorCategoria(int idCategoria) {
+        List<LugarTuristico> lugares = new ArrayList<>();
+        String sql = "SELECT * FROM lugares_turisticos WHERE id_categoria = ? ORDER BY nombre ASC";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, idCategoria);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                LugarTuristico lugar = new LugarTuristico(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("descripcion"),
+                        resultSet.getString("localidad"),
+                        resultSet.getInt("id_categoria")
+                );
+                lugares.add(lugar);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar por categoría: " + e.getMessage());
+        }
+
+        return lugares;
+    }
+
+    // Buscar por localidad
+    public List<LugarTuristico> listarPorLocalidad(String localidad) {
+        List<LugarTuristico> lugares = new ArrayList<>();
+        String sql = "SELECT * FROM lugares_turisticos WHERE LOWER(localidad) = LOWER(?) ORDER BY nombre ASC";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, localidad);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                LugarTuristico lugar = new LugarTuristico(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("descripcion"),
+                        resultSet.getString("localidad"),
+                        resultSet.getInt("id_categoria")
+                );
+                lugares.add(lugar);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar por localidad: " + e.getMessage());
+        }
+
+        return lugares;
+    }
+
+    // Buscar por nombre (texto parcial, sin distinción entre mayúsculas/minúsculas)
+    public List<LugarTuristico> buscarPorNombre(String nombreParcial) {
+        List<LugarTuristico> lugares = new ArrayList<>();
+        String sql = "SELECT * FROM lugares_turisticos WHERE LOWER(nombre) LIKE LOWER(?) ORDER BY nombre ASC";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, "%" + nombreParcial + "%");
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                LugarTuristico lugar = new LugarTuristico(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("descripcion"),
+                        resultSet.getString("localidad"),
+                        resultSet.getInt("id_categoria")
+                );
+                lugares.add(lugar);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al buscar por nombre: " + e.getMessage());
+        }
+
+        return lugares;
+    }
+
+    // Buscar por categoría y localidad combinadas
+    public List<LugarTuristico> listarPorCategoriaYLocalidad(int idCategoria, String localidad) {
+        List<LugarTuristico> lugares = new ArrayList<>();
+        String sql = "SELECT * FROM lugares_turisticos WHERE id_categoria = ? AND LOWER(localidad) = LOWER(?) ORDER BY nombre ASC";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, idCategoria);
+            statement.setString(2, localidad);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                LugarTuristico lugar = new LugarTuristico(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("descripcion"),
+                        resultSet.getString("localidad"),
+                        resultSet.getInt("id_categoria")
+                );
+                lugares.add(lugar);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar por categoría y localidad: " + e.getMessage());
+        }
+
+        return lugares;
+    }
+
 }
