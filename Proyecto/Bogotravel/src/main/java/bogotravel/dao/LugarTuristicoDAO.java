@@ -27,7 +27,8 @@ public class LugarTuristicoDAO {
                         resultSet.getString("nombre"),
                         resultSet.getString("descripcion"),
                         resultSet.getString("localidad"),
-                        resultSet.getInt("id_categoria")  // Nuevo campo
+                        resultSet.getInt("id_categoria"),
+                        resultSet.getString("imagen_url")
                 );
                 lugares.add(lugar);
             }
@@ -38,6 +39,7 @@ public class LugarTuristicoDAO {
 
         return lugares;
     }
+
 
     // Buscar lugar por ID
     public LugarTuristico buscarPorId(int id) {
@@ -54,7 +56,8 @@ public class LugarTuristicoDAO {
                         resultSet.getString("nombre"),
                         resultSet.getString("descripcion"),
                         resultSet.getString("localidad"),
-                        resultSet.getInt("id_categoria") // Nuevo campo
+                        resultSet.getInt("id_categoria"),
+                        resultSet.getString("imagen_url")// Nuevo campo
                 );
             }
 
@@ -66,7 +69,7 @@ public class LugarTuristicoDAO {
 
     // Insertar nuevo lugar turístico
     public boolean insertar(LugarTuristico lugar) {
-        String sql = "INSERT INTO lugares_turisticos (nombre, descripcion, localidad, id_categoria) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO lugares_turisticos (nombre, descripcion, localidad, id_categoria,imagenUrl) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -74,6 +77,7 @@ public class LugarTuristicoDAO {
             statement.setString(2, lugar.getDescripcion());
             statement.setString(3, lugar.getLocalidad());
             statement.setInt(4, lugar.getIdCategoria());
+            statement.setString(4, lugar.getImagenUrl());
 
             return statement.executeUpdate() > 0;
 
