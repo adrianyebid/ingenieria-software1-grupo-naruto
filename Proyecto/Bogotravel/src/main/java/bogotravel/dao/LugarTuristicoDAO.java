@@ -105,7 +105,8 @@ public class LugarTuristicoDAO {
                         resultSet.getString("nombre"),
                         resultSet.getString("descripcion"),
                         resultSet.getString("localidad"),
-                        resultSet.getInt("id_categoria")
+                        resultSet.getInt("id_categoria"),
+                        resultSet.getString("imagen_url") // Nuevo campo para la URL de la imagen
                 );
                 lugares.add(lugar);
             }
@@ -134,7 +135,8 @@ public class LugarTuristicoDAO {
                         resultSet.getString("nombre"),
                         resultSet.getString("descripcion"),
                         resultSet.getString("localidad"),
-                        resultSet.getInt("id_categoria")
+                        resultSet.getInt("id_categoria"),
+                        resultSet.getString("imagen_url") // Nuevo campo para la URL de la imagen
                 );
                 lugares.add(lugar);
             }
@@ -163,7 +165,8 @@ public class LugarTuristicoDAO {
                         resultSet.getString("nombre"),
                         resultSet.getString("descripcion"),
                         resultSet.getString("localidad"),
-                        resultSet.getInt("id_categoria")
+                        resultSet.getInt("id_categoria"),
+                        resultSet.getString("imagen_url") // Nuevo campo para la URL de la imagen
                 );
                 lugares.add(lugar);
             }
@@ -193,7 +196,8 @@ public class LugarTuristicoDAO {
                         resultSet.getString("nombre"),
                         resultSet.getString("descripcion"),
                         resultSet.getString("localidad"),
-                        resultSet.getInt("id_categoria")
+                        resultSet.getInt("id_categoria"),
+                        resultSet.getString("imagen_url") // Nuevo campo para la URL de la imagen
                 );
                 lugares.add(lugar);
             }
