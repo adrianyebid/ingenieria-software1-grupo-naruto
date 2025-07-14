@@ -43,15 +43,19 @@ public class InicioController {
         box.setStyle("-fx-background-color: #F9F9F9; -fx-padding: 10; -fx-border-radius: 8; -fx-background-radius: 8;");
 
         ImageView imagen = new ImageView();
-        InputStream is = getClass().getResourceAsStream("/Images/" + lugar.getImagenUrl());
-        if (is != null) {
-            imagen.setImage(new Image(is));
-        } else {
-            System.out.println("No se encontró la imagen: " + lugar.getImagenUrl());
+        String url = lugar.getImagenUrl();
+        System.out.println("Intentando cargar imagen desde URL: " + url);
+        try {
+            imagen.setImage(new Image(lugar.getImagenUrl(), true)); // true para cargar en segundo plano
+            imagen.setFitWidth(300);
+            imagen.setFitHeight(300);
+            imagen.setPreserveRatio(true);
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar imagen desde URL: " + e.getMessage());
         }
-        imagen.setFitWidth(200);
-        imagen.setFitHeight(200);
-        imagen.setPreserveRatio(true);
+
+
+
 
         Label nombre = new Label(lugar.getNombre());
         Label localidad = new Label(lugar.getLocalidad());
