@@ -66,7 +66,7 @@ public class UsuarioLoginController {
     public void initialize() {
         welcomeLabel.setVisible(false);
 
-        crearEstrellas(4);  // Crea 10 estrellas
+        crearEstrellas(4);  // Crea 4 estrellas
         animarEstrellas();
 
         // Crear estrella como clip
