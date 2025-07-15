@@ -1,12 +1,16 @@
 package bogotravel.controller;
 
+import bogotravel.dao.EntradaDAO;
 import bogotravel.dao.LugarTuristicoDAO;
+import bogotravel.model.Entrada;
 import bogotravel.model.LugarTuristico;
+import bogotravel.service.FotoEntradaService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -23,6 +27,7 @@ import bogotravel.model.Usuario;
 import bogotravel.sesion.SesionActual;
 
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -124,4 +129,74 @@ public class InicioController {
                     "No se pudo volver a la vista de inicio de sesión.").showAndWait();
         }
     }
+
+    @FXML
+    private void abrirFormularioEntrada() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/CrearEntradaView.fxml"));
+            Stage stage = (Stage) scrollPane.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "No se pudo cargar la vista de entrada.").showAndWait();
+        }
+    }
+
+
+    private VBox crearVistaEntrada(Entrada entrada) {
+        VBox tarjeta = new VBox(10);
+        tarjeta.setStyle("-fx-background-color: #FAFAFA; -fx-padding: 12; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10;");
+
+        Label titulo = new Label(entrada.getTitulo());
+        titulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        Label fecha = new Label("📅 Visita: " + entrada.getFechaVisita().toString());
+        Label lugar = new Label("📍 Lugar: " + (entrada.getLugarDescripcion() != null ? entrada.getLugarDescripcion() : "No especificado"));
+        Label contenido = new Label(entrada.getContenido());
+        contenido.setWrapText(true);
+
+        tarjeta.getChildren().addAll(titulo, fecha, lugar, contenido);
+
+        // Mostrar fotos (si hay)
+        List<File> fotos = new FotoEntradaService().obtenerArchivosFotos(entrada.getId());
+        if (!fotos.isEmpty()) {
+            HBox galeria = new HBox(10);
+            for (File archivo : fotos) {
+                if (archivo.exists()) {
+                    ImageView img = new ImageView(new Image(archivo.toURI().toString()));
+                    img.setFitWidth(180);
+                    img.setPreserveRatio(true);
+                    img.setSmooth(true);
+                    galeria.getChildren().add(img);
+                }
+            }
+            tarjeta.getChildren().add(galeria);
+        }
+
+        return tarjeta;
+    }
+
+    @FXML
+    private void verLugares() {
+        lugaresContainer.getChildren().clear();
+
+        List<LugarTuristico> lugares = lugarDAO.listarTodos();
+        for (LugarTuristico lugar : lugares) {
+            lugaresContainer.getChildren().add(crearVistaLugar(lugar));
+        }
+    }
+
+
+    @FXML
+    private void verEntradas() {
+        lugaresContainer.getChildren().clear();
+
+        String email = SesionActual.getUsuario().getEmail();
+        List<Entrada> entradas = new EntradaDAO().listarPorUsuario(email);
+
+        for (Entrada entrada : entradas) {
+            lugaresContainer.getChildren().add(crearVistaEntrada(entrada));
+        }
+    }
+
 }

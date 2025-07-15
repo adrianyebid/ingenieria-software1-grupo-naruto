@@ -12,8 +12,10 @@
             <Label alignment="CENTER" prefHeight="32.0" prefWidth="151.0" style="-fx-text-fill: white; -fx-font-size: 25px; -fx-font-weight: bold;" text="Bogotravel" textOverrun="CLIP" />
             <Button id="LugaresButton" prefHeight="25.0" prefWidth="150.0" text="Buscar lugares" />
             <Button id="PorVisitarButton" prefHeight="25.0" prefWidth="150.0" text="Añadir lugar" />
-            <Button id="EntradaButton" prefHeight="25.0" prefWidth="150.0" text="Crear entrada" />
+            <Button id="EntradaButton" prefHeight="25.0" prefWidth="150.0" text="Crear entrada" onAction="#abrirFormularioEntrada"/>
             <Button id="PerfilButton" prefHeight="25.0" prefWidth="149.0" text="Ver perfil" />
+            <Button id="VerEntradaButton" text="Ver entradas" onAction="#verEntradas" prefHeight="25.0" prefWidth="150.0" />
+            <Button id="VerLugarButton" text="Ver lugares" onAction="#verLugares" prefHeight="25.0" prefWidth="150.0" />
             <Button id="CerrarButton" fx:id="CerrarButton" onAction="#cerrarSesion" prefHeight="25.0" prefWidth="149.0" text="Cerrar sesión" />
         </VBox>
     </left>

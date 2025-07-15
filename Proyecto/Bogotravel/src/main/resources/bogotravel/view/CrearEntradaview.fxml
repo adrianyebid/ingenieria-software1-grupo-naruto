@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="bogotravel.controller.CrearEntradaController"
+      spacing="10" alignment="TOP_LEFT" style="-fx-padding: 20;">
+
+    <Label text="Crear nueva entrada" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <Label text="Título:" />
+    <TextField fx:id="tituloField" />
+
+    <Label text="Contenido:" />
+    <TextArea fx:id="contenidoArea" prefRowCount="5" />
+
+    <Label text="Fecha de visita:" />
+    <DatePicker fx:id="fechaPicker" />
+
+    <Label text="Descripción del lugar visitado:" />
+    <TextField fx:id="lugarField" />
+
+    <Label text="Fotos (opcional):" />
+    <Button text="Agregar foto" onAction="#agregarFoto" />
+    <ListView fx:id="listaFotos" prefHeight="100" />
+
+    <Button text="Guardar entrada" onAction="#guardarEntrada" />
+</VBox>
