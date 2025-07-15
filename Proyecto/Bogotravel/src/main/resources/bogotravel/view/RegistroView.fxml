@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.effect.SepiaTone?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="635.0" prefWidth="911.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="bogotravel.controller.RegistroController">
+
+    <Pane layoutX="-5.0" layoutY="-2.0" prefHeight="641.0" prefWidth="564.0">
+        <children>
+            <Pane layoutX="27.0" layoutY="193.0" prefHeight="275.0" prefWidth="511.0">
+                <children>
+                    <TextField fx:id="nombreField" layoutX="177.0" layoutY="30.0" prefHeight="40.0" prefWidth="298.0" promptText="Santiago..." style="-fx-background-color: #0b5563;">
+                        <font><Font name="Rockwell Condensed" size="20.0" /></font>
+                    </TextField>
+
+                    <TextField fx:id="emailField" layoutX="177.0" layoutY="118.0" prefHeight="40.0" prefWidth="298.0" promptText="nombre@gmail.com" style="-fx-background-color: #0b5563;">
+                        <font><Font name="Candara Bold" size="16.0" /></font>
+                    </TextField>
+
+                    <PasswordField fx:id="passwordField" layoutX="177.0" layoutY="202.0" prefHeight="40.0" prefWidth="298.0" promptText=".........." style="-fx-background-color: #0b5563;">
+                        <font><Font name="Candara Bold" size="16.0" /></font>
+                    </PasswordField>
+
+                    <Label layoutX="31.0" layoutY="32.0" text="Nombre:" styleClass="LabelTitulo">
+                        <font><Font name="Rockwell Condensed" size="30.0" /></font>
+                    </Label>
+
+                    <Label layoutX="31.0" layoutY="116.0" text="Correo:" styleClass="LabelTitulo">
+                        <font><Font name="Rockwell Condensed" size="30.0" /></font>
+                    </Label>
+
+                    <Label layoutX="32.0" layoutY="202.0" text="Contraseña:" styleClass="LabelTitulo">
+                        <font><Font name="Rockwell Condensed" size="30.0" /></font>
+                    </Label>
+                </children>
+            </Pane>
+
+            <Label layoutX="146.0" layoutY="40.0" prefHeight="112.0" prefWidth="286.0" text="BOGOTRAVEL">
+                <font><Font name="Rockwell Condensed" size="62.0" /></font>
+            </Label>
+
+            <Label layoutX="448.0" layoutY="69.0" styleClass="labelAnimado" text="★">
+                <font><Font size="37.0" /></font>
+                <effect><GaussianBlur radius="0.0" /></effect>
+            </Label>
+
+            <Label layoutX="64.0" layoutY="69.0" styleClass="labelAnimado" text="★">
+                <font><Font size="37.0" /></font>
+            </Label>
+
+            <Label fx:id="welcomeLabel" layoutX="57.0" layoutY="491.0" prefHeight="46.0" prefWidth="209.0" text="¡Bienvenido!" visible="false" />
+        </children>
+    </Pane>
+
+    <Pane fx:id="starsPane" layoutX="553.0" layoutY="-4.0" prefHeight="647.0" prefWidth="358.0">
+        <effect><GaussianBlur radius="0.0" /></effect>
+        <children>
+            <ImageView fx:id="miImagen" fitHeight="601.0" fitWidth="503.0" layoutX="-4.0" layoutY="49.0" opacity="0.86">
+                <image><Image url="@../../Images/imagen_2.jpg" /></image>
+                <effect><SepiaTone level="0.26" /></effect>
+            </ImageView>
+        </children>
+    </Pane>
+
+    <Button fx:id="RegistrarButton" layoutX="320.0" layoutY="524.0" onAction="#registrarUsuario" prefHeight="46.0" prefWidth="152.0" styleClass="StyleButton1" text="Registrar">
+        <font><Font name="Candara Bold" size="16.0" /></font>
+        <cursor><Cursor fx:constant="DISAPPEAR" /></cursor>
+    </Button>
+
+    <Button fx:id="irALoginButton" layoutX="85.0" layoutY="524.0" onAction="#irALogin" prefHeight="46.0" prefWidth="152.0" styleClass="StyleButton1" text="¿Ya tienes cuenta?">
+        <font><Font name="Candara Bold" size="14.0" /></font>
+        <cursor><Cursor fx:constant="DISAPPEAR" /></cursor>
+    </Button>
+
+</AnchorPane>
