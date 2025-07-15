@@ -1,0 +1,288 @@
+package bogotravel.controller;
+
+import bogotravel.dao.UsuarioDAO;
+import bogotravel.model.Usuario;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+import javafx.geometry.Bounds;
+import javafx.animation.*;
+import javafx.scene.shape.Polygon;
+import bogotravel.sesion.SesionActual;
+
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+
+public class UsuarioLoginController {
+
+    @FXML
+    private TextField emailField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private Button IniciarButton;
+    @FXML
+    private Button VolverButton;
+    @FXML
+    private Label welcomeLabel;
+    @FXML
+    private AnchorPane rootPane;
+    @FXML
+    private ImageView miImagen;
+    @FXML
+    private Label labelAnimado;
+    @FXML
+    private Pane starsPane;
+
+    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private List<Label> estrellas = new ArrayList<>();
+
+
+    @FXML
+    public void initialize() {
+        welcomeLabel.setVisible(false);
+
+        crearEstrellas(4);  // Crea 10 estrellas
+        animarEstrellas();
+
+        // Crear estrella como clip
+        Polygon estrella = crearEstrella(295, 300, 240, 130, 5);
+        miImagen.setClip(estrella);
+
+        RotateTransition rotarEstrella = new RotateTransition(Duration.seconds(90), estrella);
+        rotarEstrella.setByAngle(360);
+        rotarEstrella.setCycleCount(Animation.INDEFINITE);
+        rotarEstrella.setInterpolator(Interpolator.LINEAR);
+        rotarEstrella.play();
+
+        // Animar crecimiento de la estrella
+        ScaleTransition escalaEstrella = new ScaleTransition(Duration.seconds(2), estrella);
+        escalaEstrella.setFromX(0);
+        escalaEstrella.setFromY(0);
+        escalaEstrella.setToX(1.1);
+        escalaEstrella.setToY(1.1);
+        escalaEstrella.setInterpolator(Interpolator.EASE_OUT);
+
+        // Animar la imagen con fade-in + zoom leve
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.2), miImagen);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        ScaleTransition zoom = new ScaleTransition(Duration.seconds(1.2), miImagen);
+        zoom.setFromX(0.8);
+        zoom.setFromY(0.8);
+        zoom.setToX(1.0);
+        zoom.setToY(1.0);
+        zoom.setInterpolator(Interpolator.EASE_OUT);
+
+        // Reproducir todo al mismo tiempo
+        ParallelTransition total = new ParallelTransition(escalaEstrella, fadeIn, zoom);
+        total.play();
+    }
+
+    // Crear estrella en forma de polígono
+    private Polygon crearEstrella(double centerX, double centerY, double outerRadius, double innerRadius, int points) {
+        Polygon polygon = new Polygon();
+        double angleStep = Math.PI / points;
+        for (int i = 0; i < points * 2; i++) {
+            double r = (i % 2 == 0) ? outerRadius : innerRadius;
+            double angle = i * angleStep - Math.PI / 2;
+            double x = centerX + r * Math.cos(angle);
+            double y = centerY + r * Math.sin(angle);
+            polygon.getPoints().addAll(x, y);
+        }
+        return polygon;
+    }
+
+    @FXML
+    private void VolverUsuario(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/UsuarioRegistroView.fxml"));
+            Stage stage = (Stage) IniciarButton.getScene().getWindow();
+            root.getStylesheets().add("css/Inicio.css");
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Error al cargar la vista: " + e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void buscarUsuarioPorEmail() {
+        String email = emailField.getText();
+        Usuario usuario = usuarioDAO.buscarPorEmail(email);
+
+        if (usuario != null) {
+            passwordField.setText(usuario.getPassword());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario encontrado.");
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Usuario no encontrado.");
+            alert.showAndWait();
+        }
+    }
+
+
+    @FXML
+    private void IniciarUsuario(ActionEvent event) {
+        String email = emailField.getText();
+        String password = passwordField.getText();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Por favor ingrese su correo y contraseña.").showAndWait();
+            return;
+        }
+
+        if (usuarioDAO.validarCredenciales(email, password)) {
+
+            Usuario usuario = usuarioDAO.buscarPorEmail(email);
+
+            //iniciar sesión con el usuario encontrado
+            SesionActual.iniciarSesion(usuario);
+
+
+            lanzarEstrellasDesdeBoton(IniciarButton, 10);
+
+            showWelcomeAnimation(() -> {
+                try {
+                    Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/InicioView.fxml"));
+                    Stage stage = (Stage) IniciarButton.getScene().getWindow();
+                    root.getStylesheets().add("css/PaginaPrincipal.css");
+                    stage.setScene(new Scene(root));
+                } catch (Exception e) {
+                    new Alert(Alert.AlertType.ERROR, "Error al cargar la vista: " + e.getMessage()).showAndWait();
+                }
+            });
+
+        } else {
+            new Alert(Alert.AlertType.ERROR, "Credenciales inválidas.").showAndWait();
+        }
+    }
+
+    private void showWelcomeAnimation(Runnable onFinish) {
+        welcomeLabel.setVisible(true);
+        welcomeLabel.setOpacity(0);
+        welcomeLabel.setTranslateY(0);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(600), welcomeLabel);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        fade.setCycleCount(2);
+        fade.setAutoReverse(true);
+
+        TranslateTransition move = new TranslateTransition(Duration.millis(600), welcomeLabel);
+        move.setByY(-20);
+        move.setCycleCount(2);
+        move.setAutoReverse(true);
+
+        ParallelTransition animation = new ParallelTransition(fade, move);
+        animation.setOnFinished(e -> {
+            welcomeLabel.setVisible(false);
+            if (onFinish != null) {
+                onFinish.run();
+            }
+        });
+
+        animation.play();
+    }
+
+    private void lanzarEstrellasDesdeBoton(Button boton, int cantidad) {
+        Bounds bounds = boton.localToScene(boton.getBoundsInLocal());
+
+        for (int i = 0; i < cantidad; i++) {
+            Label estrella = new Label("★");
+            estrella.setStyle("-fx-text-fill:  #e5dba2; -fx-font-size: 10;");
+            estrella.setOpacity(1);
+
+            // Posición inicial (relativa a la escena)
+            estrella.setLayoutX(bounds.getMinX() + boton.getWidth() / 2 + (Math.random() * 20 - 10));
+            estrella.setLayoutY(bounds.getMinY() + boton.getHeight() / 2);
+
+            rootPane.getChildren().add(estrella);
+
+            // Movimiento aleatorio hacia arriba
+            TranslateTransition move = new TranslateTransition(Duration.seconds(1 + Math.random()), estrella);
+            move.setByX((Math.random() * 60) - 30); // Movimiento lateral
+            move.setByY(-80 - Math.random() * 60);  // Hacia arriba
+            move.setInterpolator(Interpolator.EASE_OUT);
+
+            // Desvanecimiento
+            FadeTransition fade = new FadeTransition(Duration.seconds(1), estrella);
+            fade.setFromValue(1);
+            fade.setToValue(0);
+
+            // Pequeño brillo (scale)
+            ScaleTransition scale = new ScaleTransition(Duration.seconds(1), estrella);
+            scale.setFromX(1);
+            scale.setToX(1.5);
+            scale.setFromY(1);
+            scale.setToY(1.5);
+
+            // Al terminar, eliminar la estrella
+            ParallelTransition starEffect = new ParallelTransition(move, fade, scale);
+            starEffect.setOnFinished(e -> rootPane.getChildren().remove(estrella));
+            starEffect.play();
+        }
+    }
+
+    private void crearEstrellas(int cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            Label estrella2 = new Label("★");
+            estrella2.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 16; -fx-effect: dropshadow(gaussian, #ffffff, 8, 0.5, 0, 0);");
+            estrella2.setOpacity(0);
+            starsPane.getChildren().add(0, estrella2);
+            estrellas.add(estrella2);
+        }
+    }
+
+    private void animarEstrellas() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            for (Label estrella : estrellas) {
+                animarDesvanecimientoAleatorio(estrella);
+            }
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private void animarDesvanecimientoAleatorio(Label label) {
+        double randomX = Math.random() * starsPane.getWidth();
+        double randomY = Math.random() * starsPane.getHeight();
+        double randomDelay = Math.random() * 1.5;
+
+        label.setLayoutX(randomX);
+        label.setLayoutY(randomY);
+
+        FadeTransition fade = new FadeTransition(Duration.seconds(1.5), label);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        fade.setCycleCount(2);
+        fade.setAutoReverse(true);
+        fade.setDelay(Duration.seconds(randomDelay));
+        fade.play();
+    }
+}

@@ -11,7 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
@@ -25,7 +24,6 @@ import javafx.scene.shape.Polygon;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Interpolator;
@@ -38,7 +36,7 @@ import java.util.List;
 
 
 
-public class UsuarioController {
+public class UsuarioRegistroController {
 
     @FXML
     private TextField nombreField;
@@ -50,8 +48,6 @@ public class UsuarioController {
     private Button IniciarButton;
     @FXML
     private Button RegistrarButton;
-    @FXML
-    private Label welcomeLabel;
     @FXML
     private AnchorPane rootPane;
     @FXML
@@ -67,7 +63,6 @@ public class UsuarioController {
 
     @FXML
     public void initialize() {
-        welcomeLabel.setVisible(false);
         nombreField.setVisible(true);
 
         crearEstrellas(4);  // Crea 10 estrellas
@@ -128,6 +123,11 @@ public class UsuarioController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
+        if (nombre.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Por favor completa todos los campos.").showAndWait();
+            return;
+        }
+
         Usuario usuario = new Usuario(nombre, email, password);
         boolean exito = usuarioDAO.registrar(usuario);
 
@@ -157,68 +157,17 @@ public class UsuarioController {
 
     @FXML
     private void IniciarUsuario(ActionEvent event) {
-        String email = emailField.getText();
-        String password = passwordField.getText();
-
-        if (usuarioDAO.validarCredenciales(email, password)) {
-
-            lanzarEstrellasDesdeBoton(IniciarButton, 10);
-            // Mostrar animación de bienvenida
-            showWelcomeAnimation(() -> {
-                try {
-                    Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/InicioView.fxml"));
-                    Stage stage = (Stage) IniciarButton.getScene().getWindow();
-                    root.getStylesheets().add("css/PaginaPrincipal.css");
-                    stage.setScene(new Scene(root));
-                } catch (Exception e) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Error al cargar la vista: " + e.getMessage());
-                    alert.showAndWait();
-                }
-            });
-
-            // Efecto rebote en el botón
-            ScaleTransition scale = new ScaleTransition(Duration.millis(150), IniciarButton);
-            scale.setToX(0.95);
-            scale.setToY(0.95);
-
-            ScaleTransition scaleBack = new ScaleTransition(Duration.millis(150), IniciarButton);
-            scaleBack.setToX(1.0);
-            scaleBack.setToY(1.0);
-
-            new SequentialTransition(scale, scaleBack).play();
-
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Credenciales inválidas. Por favor, inténtelo de nuevo.");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/UsuarioLoginView.fxml"));
+            Stage stage = (Stage) IniciarButton.getScene().getWindow();
+            root.getStylesheets().add("css/Inicio.css");
+            stage.setScene(new Scene(root));
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Error al cargar la vista: " + e.getMessage());
             alert.showAndWait();
         }
     }
 
-    private void showWelcomeAnimation(Runnable onFinish) {
-        welcomeLabel.setVisible(true);
-        welcomeLabel.setOpacity(0);
-        welcomeLabel.setTranslateY(0);
-
-        FadeTransition fade = new FadeTransition(Duration.millis(600), welcomeLabel);
-        fade.setFromValue(0);
-        fade.setToValue(1);
-        fade.setCycleCount(2);
-        fade.setAutoReverse(true);
-
-        TranslateTransition move = new TranslateTransition(Duration.millis(600), welcomeLabel);
-        move.setByY(-20);
-        move.setCycleCount(2);
-        move.setAutoReverse(true);
-
-        ParallelTransition animation = new ParallelTransition(fade, move);
-        animation.setOnFinished(e -> {
-            welcomeLabel.setVisible(false);
-            if (onFinish != null) {
-                onFinish.run();
-            }
-        });
-
-        animation.play();
-    }
 
     private void lanzarEstrellasDesdeBoton(Button boton, int cantidad) {
         Bounds bounds = boton.localToScene(boton.getBoundsInLocal());

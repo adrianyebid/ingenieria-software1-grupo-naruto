@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="635.0" prefWidth="911.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bogotravel.controller.UsuarioController">
+<AnchorPane fx:id="rootPane" prefHeight="635.0" prefWidth="911.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bogotravel.controller.UsuarioRegistroController">
    <Pane id="Pane1" layoutX="-5.0" layoutY="-2.0" prefHeight="641.0" prefWidth="564.0">
       <children>
          <Pane id="Pane2" layoutX="27.0" layoutY="193.0" prefHeight="275.0" prefWidth="511.0">
@@ -73,7 +73,23 @@
                <Font size="37.0" />
             </font>
          </Label>
-         <Label fx:id="welcomeLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="491.0" prefHeight="46.0" prefWidth="209.0" text="!Bienvenido¡" />
+      
+          <Button id="Button2" fx:id="RegistrarButton" layoutX="340.0" layoutY="524.0" onAction="#registrarUsuario" prefHeight="46.0" prefWidth="152.0" styleClass="StyleButton1" text="Registrar">
+            <font>
+               <Font name="Candara Bold" size="16.0" />
+            </font>
+            <cursor>
+               <Cursor fx:constant="DISAPPEAR" />
+            </cursor>
+         </Button>
+         <Button id="Button1" fx:id="IniciarButton" layoutX="51.0" layoutY="524.0" onAction="#IniciarUsuario" prefHeight="46.0" prefWidth="232.0" style="" styleClass="StyleButton1" text="¿Ya tienes una cuenta?">
+            <font>
+               <Font name="Candara Bold" size="16.0" />
+            </font>
+            <cursor>
+               <Cursor fx:constant="DISAPPEAR" />
+            </cursor>
+         </Button>
       </children></Pane>
    <Pane id="Pane3" fx:id="starsPane" layoutX="553.0" layoutY="-4.0" prefHeight="647.0" prefWidth="358.0">
       <effect>
@@ -90,20 +106,4 @@
          </ImageView>
       </children>
    </Pane>
-
-    <Button id="Button2" fx:id="RegistrarButton" layoutX="320.0" layoutY="524.0" onAction="#registrarUsuario" prefHeight="46.0" prefWidth="152.0" styleClass="StyleButton1" text="Registrar">
-      <font>
-         <Font name="Candara Bold" size="16.0" />
-      </font>
-      <cursor>
-         <Cursor fx:constant="DISAPPEAR" />
-      </cursor></Button>
-   <Button id="Button1" fx:id="IniciarButton" layoutX="85.0" layoutY="524.0" onAction="#IniciarUsuario" prefHeight="46.0" prefWidth="152.0" style="" styleClass="StyleButton1" text="Iniciar Sesión">
-      <font>
-         <Font name="Candara Bold" size="16.0" />
-      </font>
-      <cursor>
-         <Cursor fx:constant="DISAPPEAR" />
-      </cursor>
-   </Button>
 </AnchorPane>

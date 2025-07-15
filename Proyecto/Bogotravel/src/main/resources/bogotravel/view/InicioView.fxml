@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600" prefWidth="900" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="bogotravel.controller.InicioController">
+<BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bogotravel.controller.InicioController">
     <left>
         <VBox spacing="15" style="-fx-background-color: #2E4053; -fx-padding: 20;">
             <Label style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" text="Bogotravel" />
@@ -14,7 +14,7 @@
             <Button id="PorVisitarButton" text="Añadir lugar" />
             <Button id="EntradaButton" text="Crear entrada" />
             <Button id="PerfilButton" text="Ver perfil" />
-            <Button id="CerrarButton" text="Cerrar sesión" />
+            <Button id="CerrarButton" fx:id="CerrarButton" onAction="#cerrarSesion" text="Cerrar sesión" />
         </VBox>
     </left>
     <center>
