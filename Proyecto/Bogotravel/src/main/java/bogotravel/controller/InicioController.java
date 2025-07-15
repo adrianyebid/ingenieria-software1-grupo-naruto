@@ -10,10 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -142,6 +139,40 @@ public class InicioController {
         }
     }
 
+    private void abrirFormularioEdicion(Entrada entrada) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/CrearEntradaView.fxml"));
+            Parent root = loader.load();
+
+            CrearEntradaController controller = loader.getController();
+            controller.cargarEntrada(entrada); // << Pasamos la entrada
+
+            Stage stage = (Stage) scrollPane.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "No se pudo cargar el formulario de edición.").showAndWait();
+        }
+    }
+
+    private void eliminarEntrada(Entrada entrada) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Deseas eliminar esta entrada?", ButtonType.YES, ButtonType.NO);
+        confirm.showAndWait();
+
+        if (confirm.getResult() == ButtonType.YES) {
+            EntradaDAO dao = new EntradaDAO();
+            boolean eliminado = dao.eliminar(entrada.getId());
+
+            if (eliminado) {
+                lugaresContainer.getChildren().clear();
+                verEntradas();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "No se pudo eliminar la entrada.").showAndWait();
+            }
+        }
+    }
+
+
 
     private VBox crearVistaEntrada(Entrada entrada) {
         VBox tarjeta = new VBox(10);
@@ -150,8 +181,8 @@ public class InicioController {
         Label titulo = new Label(entrada.getTitulo());
         titulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-        Label fecha = new Label("📅 Visita: " + entrada.getFechaVisita().toString());
-        Label lugar = new Label("📍 Lugar: " + (entrada.getLugarDescripcion() != null ? entrada.getLugarDescripcion() : "No especificado"));
+        Label fecha = new Label("Visita: " + entrada.getFechaVisita().toString());
+        Label lugar = new Label("Lugar: " + (entrada.getLugarDescripcion() != null ? entrada.getLugarDescripcion() : "No especificado"));
         Label contenido = new Label(entrada.getContenido());
         contenido.setWrapText(true);
 
@@ -173,8 +204,25 @@ public class InicioController {
             tarjeta.getChildren().add(galeria);
         }
 
+        // Botones de acción (Editar y Eliminar)
+        HBox botones = new HBox(10);
+        botones.setStyle("-fx-alignment: center-right;");
+
+        Button editarBtn = new Button("Editar");
+        Button eliminarBtn = new Button("Eliminar");
+
+        editarBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+        eliminarBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+
+        editarBtn.setOnAction(e -> abrirFormularioEdicion(entrada));
+        eliminarBtn.setOnAction(e -> eliminarEntrada(entrada));
+
+        botones.getChildren().addAll(editarBtn, eliminarBtn);
+        tarjeta.getChildren().add(botones);
+
         return tarjeta;
     }
+
 
     @FXML
     private void verLugares() {
