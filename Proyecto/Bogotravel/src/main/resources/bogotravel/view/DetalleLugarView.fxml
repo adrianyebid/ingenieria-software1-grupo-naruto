@@ -21,13 +21,13 @@
             <ImageView fx:id="imagenView" fitHeight="223.0" fitWidth="336.0" layoutX="-2.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
-      <Label fx:id="nombre" layoutX="673.0" layoutY="28.0" text="Label" />
-      <Label fx:id="descripcion" layoutX="225.0" layoutY="300.0" text="Label" />
-      <Label fx:id="localidad" layoutX="673.0" layoutY="101.0" text="Label" />
-      <Button fx:id="AgregarButton" layoutX="301.0" layoutY="434.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="174.0" text="¡ Quiero Visitar !" />
-      <Label layoutX="577.0" layoutY="28.0" text="Lugar:" />
-      <Label layoutX="577.0" layoutY="101.0" text="Localidad:" />
-      <Label layoutX="225.0" layoutY="266.0" text="DESCRIPCIÓN" />
-      <Button fx:id="VolverButton" layoutX="614.0" layoutY="434.0" mnemonicParsing="false" onAction="#VolverAction" prefHeight="51.0" prefWidth="174.0" text="Volver" />
+      <Label fx:id="nombre" layoutX="673.0" layoutY="28.0" styleClass="LabelInfo" text="Label" />
+      <Label fx:id="descripcion" layoutX="225.0" layoutY="300.0" styleClass="LabelInfo" text="Label" />
+      <Label fx:id="localidad" layoutX="673.0" layoutY="101.0" styleClass="LabelInfo" text="Label" />
+      <Button id="AgregarButton" fx:id="AgregarButton" layoutX="301.0" layoutY="434.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="174.0" text="¡ Quiero Visitar !" />
+      <Label layoutX="577.0" layoutY="28.0" styleClass="LabelTitulo" text="Lugar:" />
+      <Label layoutX="577.0" layoutY="101.0" styleClass="LabelTitulo" text="Localidad:" />
+      <Label layoutX="225.0" layoutY="266.0" styleClass="LabelTitulo" text="DESCRIPCIÓN" />
+      <Button id="VolverButton" fx:id="VolverButton" layoutX="614.0" layoutY="434.0" mnemonicParsing="false" onAction="#VolverAction" prefHeight="51.0" prefWidth="174.0" text="Volver" />
    </children>
 </AnchorPane>

@@ -85,6 +85,7 @@ public class InicioController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/DetalleLugarView.fxml"));
                 Parent root = loader.load();
+                root.getStylesheets().add("css/DetalleLugar.css");
 
                 DetalleLugarController controller = loader.getController();
                 controller.cargarLugar(lugar);
@@ -116,7 +117,7 @@ public class InicioController {
         VBox textoBox = new VBox(5);
 
         Label nombre = new Label(lugar.getNombre());
-        nombre.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        nombre.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;-fx-font-family:Rockwell Condensed;");
 
         Label localidad = new Label("Localidad: " + lugar.getLocalidad());
         localidad.setStyle("-fx-font-size: 14px;");
@@ -202,7 +203,7 @@ public class InicioController {
         tarjeta.setStyle("-fx-background-color: #FAFAFA; -fx-padding: 12; -fx-background-radius: 10; -fx-border-color: #cccccc; -fx-border-radius: 10;");
 
         Label titulo = new Label(entrada.getTitulo());
-        titulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        titulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;-fx-font-family:Rockwell Condensed;");
 
         Label fecha = new Label("Visita: " + entrada.getFechaVisita().toString());
         Label lugar = new Label("Lugar: " + (entrada.getLugarDescripcion() != null ? entrada.getLugarDescripcion() : "No especificado"));
@@ -231,11 +232,14 @@ public class InicioController {
         HBox botones = new HBox(10);
         botones.setStyle("-fx-alignment: center-right;");
 
+
         Button editarBtn = new Button("Editar");
         Button eliminarBtn = new Button("Eliminar");
 
-        editarBtn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
-        eliminarBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
+        editarBtn.setStyle("-fx-background-color: #0b5563; -fx-text-fill: white;");
+        editarBtn.getStyleClass().add("botones-entrada");
+        eliminarBtn.setStyle("-fx-background-color: #9e443d; -fx-text-fill: white;");
+        eliminarBtn.getStyleClass().add("botones-entrada");
 
         editarBtn.setOnAction(e -> abrirFormularioEdicion(entrada));
         eliminarBtn.setOnAction(e -> eliminarEntrada(entrada));
