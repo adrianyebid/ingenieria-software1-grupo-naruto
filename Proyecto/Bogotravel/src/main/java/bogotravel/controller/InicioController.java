@@ -72,9 +72,7 @@ public class InicioController {
         box.setStyle("-fx-background-color: #F9F9F9; -fx-padding: 10; -fx-border-radius: 8; -fx-background-radius: 8;");
 
         ImageView imagen = new ImageView();
-
         String url = lugar.getImagenUrl();
-        System.out.println("Intentando cargar imagen desde URL: " + url);
         if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
             try {
                 Image img = new Image(url, true);
@@ -83,6 +81,23 @@ public class InicioController {
                 System.out.println("No se pudo cargar imagen desde URL: " + e.getMessage());
             }
         }
+        box.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/DetalleLugarView.fxml"));
+                Parent root = loader.load();
+
+                DetalleLugarController controller = loader.getController();
+                controller.cargarLugar(lugar);
+
+                Stage stage = (Stage) scrollPane.getScene().getWindow();
+                stage.setScene(new Scene(root));
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error al cargar la vista de detalle del lugar: " + e.getMessage());
+            }
+        });
+
+
 
         imagen.setFitWidth(300);
         imagen.setFitHeight(300);
@@ -97,15 +112,23 @@ public class InicioController {
         // Sombra (opcional)
         imagen.setEffect(new DropShadow(10, javafx.scene.paint.Color.GRAY));
 
-
-
+        // 👉 Agrupar texto en VBox
+        VBox textoBox = new VBox(5);
 
         Label nombre = new Label(lugar.getNombre());
-        Label localidad = new Label(lugar.getLocalidad());
-        Label descripcion = new Label(lugar.getDescripcion());
         nombre.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-        box.getChildren().addAll(imagen, nombre,localidad,descripcion);
+        Label localidad = new Label("Localidad: " + lugar.getLocalidad());
+        localidad.setStyle("-fx-font-size: 14px;");
+
+        Label descripcion = new Label(lugar.getDescripcion());
+        descripcion.setWrapText(true);
+        descripcion.setMaxWidth(400); // puedes ajustar el ancho máximo
+        descripcion.setStyle("-fx-font-size: 13px;");
+
+        textoBox.getChildren().addAll(nombre, localidad, descripcion);
+
+        box.getChildren().addAll(imagen, textoBox);
         return box;
     }
 
@@ -128,7 +151,7 @@ public class InicioController {
     }
 
     @FXML
-    private void abrirFormularioEntrada() {
+    private void abrirFormularioEntrada(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/CrearEntradaView.fxml"));
             Stage stage = (Stage) scrollPane.getScene().getWindow();
