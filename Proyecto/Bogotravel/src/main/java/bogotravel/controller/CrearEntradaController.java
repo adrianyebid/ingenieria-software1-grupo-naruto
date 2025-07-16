@@ -100,14 +100,8 @@ public class CrearEntradaController {
         if (operacionExitosa) {
             new Alert(Alert.AlertType.INFORMATION, "Entrada guardada exitosamente.").showAndWait();
 
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/InicioView.fxml"));
-                Stage stage = (Stage) tituloField.getScene().getWindow();
-                root.getStylesheets().add("css/PaginaPrincipal.css");
-                stage.setScene(new Scene(root));
-            } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Error al regresar a la página de inicio.").showAndWait();
-            }
+            Stage stage = (Stage) tituloField.getScene().getWindow();
+            stage.close(); // Solo cierra la ventana actual
 
         } else {
             new Alert(Alert.AlertType.ERROR, "Ocurrió un error al guardar la entrada.").showAndWait();

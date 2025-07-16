@@ -154,14 +154,20 @@ public class InicioController {
     @FXML
     private void abrirFormularioEntrada(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/bogotravel/view/CrearEntradaView.fxml"));
-            Stage stage = (Stage) scrollPane.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (Exception e) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/CrearEntradaView.fxml"));
+            Parent root = loader.load();
+
+            Stage nuevaVentana = new Stage();
+            nuevaVentana.setTitle("Crear nueva entrada");
+            nuevaVentana.setScene(new Scene(root));
+            nuevaVentana.show();
+
+        } catch (IOException e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "No se pudo cargar la vista de entrada.").showAndWait();
+            new Alert(Alert.AlertType.ERROR, "No se pudo abrir el formulario de entrada.").showAndWait();
         }
     }
+
 
     private void abrirFormularioEdicion(Entrada entrada) {
         try {
