@@ -41,3 +41,15 @@
     animation-name: clickAnimation;
     animation-duration: 0.5s;
 }
+
+.lugar-box {
+    -fx-background-color: #F9F9F9;
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand; /* Cambia el cursor a mano para indicar que es clickable */
+}
+
+.lugar-box:hover {
+    -fx-background-color: #d6d6d6; /* Color más oscuro cuando haces hover */
+}

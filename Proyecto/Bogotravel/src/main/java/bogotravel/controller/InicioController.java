@@ -69,7 +69,7 @@ public class InicioController {
 
     private HBox crearVistaLugar(LugarTuristico lugar) {
         HBox box = new HBox(10);
-        box.setStyle("-fx-background-color: #F9F9F9; -fx-padding: 10; -fx-border-radius: 8; -fx-background-radius: 8;");
+        box.getStyleClass().add("lugar-box");
 
         ImageView imagen = new ImageView();
         String url = lugar.getImagenUrl();
