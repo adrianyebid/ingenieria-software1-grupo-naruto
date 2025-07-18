@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,7 +34,11 @@ public class DetalleLugarController {
     @FXML
     private Button VolverButton;
 
+    @FXML
+    private Button AgregarButton;
+
     private LugarTuristico lugarActual;
+
 
     public void cargarLugar(LugarTuristico lugar) {
         this.lugarActual = lugar;
@@ -71,5 +76,33 @@ public class DetalleLugarController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void agregarLugarPorVisitar(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/PorVisitarView.fxml"));
+            Parent root = loader.load();
+
+            // Obtener controlador
+            PorVisitarController controller = loader.getController();
+            controller.setLugar(lugarActual);
+
+            // Obtener la ventana actual (DetalleLugarView)
+            Stage detallesStage = (Stage) AgregarButton.getScene().getWindow(); // botón Agregar
+
+            // Crear y mostrar nueva ventana (PorVisitarView)
+            Stage popupStage = new Stage();
+            controller.setDetallesStage(detallesStage, popupStage); // PASO IMPORTANTE
+            popupStage.setTitle("Agregar a Por Visitar");
+            popupStage.setScene(new Scene(root));
+            popupStage.setResizable(false);
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

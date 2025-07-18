@@ -24,7 +24,7 @@
       <Label fx:id="nombre" layoutX="673.0" layoutY="28.0" styleClass="LabelInfo" text="Label" />
       <Label fx:id="descripcion" layoutX="225.0" layoutY="300.0" styleClass="LabelInfo" text="Label" />
       <Label fx:id="localidad" layoutX="673.0" layoutY="101.0" styleClass="LabelInfo" text="Label" />
-      <Button id="AgregarButton" fx:id="AgregarButton" layoutX="301.0" layoutY="434.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="174.0" text="¡ Quiero Visitar !" />
+      <Button id="AgregarButton" fx:id="AgregarButton" layoutX="301.0" layoutY="434.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="174.0" onAction="#agregarLugarPorVisitar" text="¡ Quiero Visitar !" />
       <Label layoutX="577.0" layoutY="28.0" styleClass="LabelTitulo" text="Lugar:" />
       <Label layoutX="577.0" layoutY="101.0" styleClass="LabelTitulo" text="Localidad:" />
       <Label layoutX="225.0" layoutY="266.0" styleClass="LabelTitulo" text="DESCRIPCIÓN" />

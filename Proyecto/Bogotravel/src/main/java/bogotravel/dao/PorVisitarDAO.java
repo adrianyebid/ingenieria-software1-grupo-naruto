@@ -107,4 +107,21 @@ public class PorVisitarDAO {
             return false;
         }
     }
+
+    public boolean yaExiste(int idLugar, String emailUsuario) {
+        String sql = "SELECT COUNT(*) FROM por_visitar WHERE id_lugar = ? AND email_usuario = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, idLugar);
+            statement.setString(2, emailUsuario);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al verificar existencia: " + e.getMessage());
+        }
+        return false;
+    }
+
 }

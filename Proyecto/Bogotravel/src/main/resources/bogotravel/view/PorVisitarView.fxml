@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8"
+            fx:controller="bogotravel.controller.PorVisitarController"
+            prefWidth="600" prefHeight="400">
+    <children>
+        <Label layoutX="50" layoutY="30" text="Confirmar visita a:" style="-fx-font-size: 16px;"/>
+        <Label fx:id="nombreLugarLabel" layoutX="220" layoutY="30" style="-fx-font-weight: bold;"/>
+
+        <Label layoutX="50" layoutY="90" text="Selecciona la prioridad (1 = Alta, 2 = Media, 3 = Baja):"/>
+        <TextField fx:id="prioridadField" layoutX="370" layoutY="85" prefWidth="50"/>
+
+        <Label layoutX="50" layoutY="140" text="Selecciona una fecha de recordatorio:"/>
+        <DatePicker fx:id="recordatorioPicker" layoutX="300" layoutY="135"/>
+
+        <Button layoutX="150" layoutY="200" text="Confirmar" onAction="#guardarLugar"/>
+        <Button layoutX="300" layoutY="200" text="Cancelar" onAction="#cancelar"/>
+
+        <Label fx:id="mensajeLabel" layoutX="150" layoutY="250" textFill="red"/>
+    </children>
+</AnchorPane>
