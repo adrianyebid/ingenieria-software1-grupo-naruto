@@ -36,6 +36,12 @@ public class CrearEntradaController {
     private final EntradaDAO entradaDAO = new EntradaDAO();
     private final FotoEntradaService fotoService = new FotoEntradaService();
 
+    private boolean entradaGuardada = false;
+
+    public boolean isEntradaGuardada() {
+        return entradaGuardada;
+    }
+
     @FXML
     public void agregarFoto() {
         FileChooser fileChooser = new FileChooser();
@@ -97,12 +103,13 @@ public class CrearEntradaController {
             }
         }
 
+
         if (operacionExitosa) {
+            entradaGuardada = true; // ✅ Aquí indicamos que se guardó correctamente
             new Alert(Alert.AlertType.INFORMATION, "Entrada guardada exitosamente.").showAndWait();
 
             Stage stage = (Stage) tituloField.getScene().getWindow();
-            stage.close(); // Solo cierra la ventana actual
-
+            stage.close();
         } else {
             new Alert(Alert.AlertType.ERROR, "Ocurrió un error al guardar la entrada.").showAndWait();
         }

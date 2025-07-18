@@ -18,19 +18,37 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import bogotravel.model.Usuario;
 import bogotravel.sesion.SesionActual;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Label;
 
+import java.util.List;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+
+
+import java.util.LinkedHashMap;
+import java.util.Arrays;
+
+
 
 public class InicioController {
 
@@ -42,6 +60,16 @@ public class InicioController {
 
     @FXML
     private Button CerrarButton;
+    @FXML
+    private ComboBox<String> categoriaComboBox;
+
+    @FXML
+    private ComboBox<String> localidadComboBox;
+
+    @FXML
+    private TextField nombreTextField;
+    @FXML
+    private HBox buscadorBox;
 
     private final LugarTuristicoDAO lugarDAO = new LugarTuristicoDAO();
 
@@ -67,7 +95,71 @@ public class InicioController {
         for (LugarTuristico lugar : lugares) {
             lugaresContainer.getChildren().add(crearVistaLugar(lugar));
         }
+
+        // Mapear categorías
+        categoriasMap.put("Cultural", 1);
+        categoriasMap.put("Natural", 2);
+        categoriasMap.put("Gastronómico", 3);
+        categoriasMap.put("Tecnológico", 4);
+        categoriasMap.put("Recreativo", 5);
+        categoriasMap.put("Religioso", 6);
+        categoriasMap.put("Histórico", 7);
+
+        categoriaComboBox.getItems().addAll(categoriasMap.keySet());
+        localidadComboBox.getItems().addAll(localidadesBogota);
+
+        cargarLugares(lugarDAO.listarTodos());
     }
+
+    private void cargarLugares(List<LugarTuristico> lugares) {
+        lugaresContainer.getChildren().clear();
+        for (LugarTuristico lugar : lugares) {
+            lugaresContainer.getChildren().add(crearVistaLugar(lugar));
+        }
+
+        if (lugares.isEmpty()) {
+            Label vacio = new Label("No hay lugares por visitar.");
+            vacio.setStyle("-fx-font-size: 16px; -fx-text-fill: #888;");
+            lugaresContainer.getChildren().add(vacio);
+        }
+    }
+
+    private final Map<String, Integer> categoriasMap = new LinkedHashMap<>();
+    private final List<String> localidadesBogota = Arrays.asList(
+            "Usaquén", "Chapinero", "Santa Fe", "San Cristóbal", "Usme",
+            "Tunjuelito", "Bosa", "Kennedy", "Fontibón", "Engativá",
+            "Suba", "Barrios Unidos", "Teusaquillo", "Los Mártires", "Antonio Nariño",
+            "Puente Aranda", "La Candelaria", "Rafael Uribe Uribe", "Ciudad Bolívar", "Sumapaz"
+    );
+
+    @FXML
+    private void buscarLugares() {
+        String nombre = nombreTextField.getText().trim();
+        String categoria = categoriaComboBox.getValue();
+        String localidad = localidadComboBox.getValue();
+
+        List<LugarTuristico> resultados = new ArrayList<>();
+
+        if (!nombre.isEmpty()) {
+            resultados = lugarDAO.buscarPorNombre(nombre);
+        } else if (categoria != null && localidad != null) {
+            int idCategoria = categoriasMap.get(categoria);
+            resultados = lugarDAO.listarPorCategoriaYLocalidad(idCategoria, localidad);
+        } else {
+            resultados = lugarDAO.listarTodos();
+        }
+
+        cargarLugares(resultados);
+    }
+
+    @FXML
+    private void limpiarFiltros() {
+        nombreTextField.clear();
+        categoriaComboBox.getSelectionModel().clearSelection();
+        localidadComboBox.getSelectionModel().clearSelection();
+        cargarLugares(lugarDAO.listarTodos());
+    }
+
 
     private HBox crearVistaLugar(LugarTuristico lugar) {
         HBox box = new HBox(10);
@@ -159,11 +251,18 @@ public class InicioController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/bogotravel/view/CrearEntradaView.fxml"));
             Parent root = loader.load();
 
+            CrearEntradaController controller = loader.getController();
+
             Stage nuevaVentana = new Stage();
             nuevaVentana.setTitle("Crear nueva entrada");
             nuevaVentana.setScene(new Scene(root));
-            nuevaVentana.show();
+            nuevaVentana.initModality(Modality.APPLICATION_MODAL); // Esto bloquea la ventana principal
+            nuevaVentana.showAndWait(); // Espera hasta que se cierre la ventana
 
+            if (controller.isEntradaGuardada()) {
+                System.out.println("Recargando datos...");
+                verEntradas(); // 🔁 Refrescamos la lista de entradas
+            }
         } catch (IOException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "No se pudo abrir el formulario de entrada.").showAndWait();
@@ -177,10 +276,12 @@ public class InicioController {
             Parent root = loader.load();
 
             CrearEntradaController controller = loader.getController();
-            controller.cargarEntrada(entrada); // << Pasamos la entrada
+            controller.cargarEntrada(entrada);
 
-            Stage stage = (Stage) scrollPane.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Stage nuevaVentana = new Stage();
+            nuevaVentana.setTitle("Editar entrada");
+            nuevaVentana.setScene(new Scene(root));
+            nuevaVentana.show();
         } catch (IOException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "No se pudo cargar el formulario de edición.").showAndWait();
@@ -261,6 +362,8 @@ public class InicioController {
 
     @FXML
     private void verLugares() {
+        buscadorBox.setVisible(true);
+        buscadorBox.setManaged(true);
         lugaresContainer.getChildren().clear();
 
         List<LugarTuristico> lugares = lugarDAO.listarTodos();
@@ -272,6 +375,8 @@ public class InicioController {
 
     @FXML
     private void verEntradas() {
+        buscadorBox.setVisible(false);
+        buscadorBox.setManaged(false);
         lugaresContainer.getChildren().clear();
 
         String email = SesionActual.getUsuario().getEmail();
@@ -284,6 +389,8 @@ public class InicioController {
 
     @FXML
     private void verPorVisitar() {
+        buscadorBox.setVisible(false);
+        buscadorBox.setManaged(false);
         lugaresContainer.getChildren().clear();
 
         PorVisitarDAO dao = new PorVisitarDAO();

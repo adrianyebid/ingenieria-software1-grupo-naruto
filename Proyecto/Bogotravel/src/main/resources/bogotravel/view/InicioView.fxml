@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bogotravel.controller.InicioController">
     <left>
         <VBox prefHeight="600.0" prefWidth="200.0" spacing="15" style="-fx-background-color: #2E4053; -fx-padding: 20;">
             <Label alignment="CENTER" prefHeight="32.0" prefWidth="151.0" style="-fx-text-fill: white; -fx-font-size: 25px; -fx-font-weight: bold;" text="Bogotravel" textOverrun="CLIP" />
-            <Button id="LugaresButton" prefHeight="25.0" prefWidth="150.0" text="Buscar lugares" />
+            <Button id="VerLugarButton" onAction="#verLugares" prefHeight="25.0" prefWidth="150.0" text="Ver lugares" />
+            <Button id="VerEntradaButton" onAction="#verEntradas" prefHeight="25.0" prefWidth="150.0" text="Ver entradas" />
+            <Button id="EntradaButton" onAction="#abrirFormularioEntrada" prefHeight="25.0" prefWidth="150.0" text="Crear entrada" />
+            <Button id="VerPorVisitarButton" onAction="#verPorVisitar" prefHeight="25.0" prefWidth="150.0" text="Ver por visitar" />
             <Button id="PorVisitarButton" prefHeight="25.0" prefWidth="150.0" text="Añadir lugar" />
-            <Button id="EntradaButton" prefHeight="25.0" prefWidth="150.0" text="Crear entrada" onAction="#abrirFormularioEntrada"/>
             <Button id="PerfilButton" prefHeight="25.0" prefWidth="149.0" text="Ver perfil" />
-            <Button id="VerEntradaButton" text="Ver entradas" onAction="#verEntradas" prefHeight="25.0" prefWidth="150.0" />
-            <Button id="VerLugarButton" text="Ver lugares" onAction="#verLugares" prefHeight="25.0" prefWidth="150.0" />
-            <Button id="VerPorVisitarButton" text="Ver por visitar" onAction="#verPorVisitar" prefHeight="25.0" prefWidth="150.0" />
             <Button id="CerrarButton" fx:id="CerrarButton" onAction="#cerrarSesion" prefHeight="25.0" prefWidth="149.0" text="Cerrar sesión" />
         </VBox>
     </left>
     <center>
-        <ScrollPane fx:id="scrollPane" fitToWidth="true">
-            <VBox fx:id="lugaresContainer" spacing="15" style="-fx-padding: 20;" />
-        </ScrollPane>
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <HBox fx:id="buscadorBox" alignment="CENTER_LEFT" spacing="10">
+                <ComboBox fx:id="categoriaComboBox" prefHeight="25.0" prefWidth="134.0" promptText="Categoría" />
+                <ComboBox fx:id="localidadComboBox" prefHeight="25.0" prefWidth="138.0" promptText="Localidad" />
+                <TextField fx:id="nombreTextField" prefHeight="25.0" prefWidth="177.0" promptText="Buscar por nombre..." />
+                <Button onAction="#buscarLugares" prefHeight="25.0" prefWidth="74.0" text="Buscar" />
+            <Button onAction="#limpiarFiltros" prefHeight="25.0" prefWidth="71.0" text="Limpiar" />
+            </HBox>
+            <ScrollPane fx:id="scrollPane" fitToWidth="true" prefHeight="500">
+                <VBox fx:id="lugaresContainer" spacing="15" />
+            </ScrollPane>
+        </VBox>
     </center>
 </BorderPane>
