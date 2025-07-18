@@ -10,8 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase DAO para gestionar las operaciones relacionadas con la tabla fotos_entrada.
+ */
 public class FotoEntradaDAO {
-    // Guardar foto asociada a una entrada
+
+    /**
+     * Guarda una nueva foto asociada a una entrada en la base de datos.
+     *
+     * @param foto Objeto FotoEntrada que contiene el ID de la entrada y la ruta de la foto.
+     * @return true si se guardó correctamente, false en caso contrario.
+     */
     public boolean guardarFoto(FotoEntrada foto) {
         String sql = "INSERT INTO fotos_entrada (entrada_id, ruta) VALUES (?, ?)";
 
@@ -29,7 +38,12 @@ public class FotoEntradaDAO {
         }
     }
 
-    // Listar fotos de una entrada
+    /**
+     * Lista todas las fotos asociadas a una entrada específica.
+     *
+     * @param entradaId ID de la entrada cuyas fotos se desean consultar.
+     * @return Lista de objetos FotoEntrada correspondientes a la entrada.
+     */
     public List<FotoEntrada> listarPorEntrada(int entradaId) {
         List<FotoEntrada> fotos = new ArrayList<>();
         String sql = "SELECT * FROM fotos_entrada WHERE entrada_id = ?";
@@ -56,22 +70,12 @@ public class FotoEntradaDAO {
         return fotos;
     }
 
-    // (Opcional) Eliminar una foto
-    public boolean eliminar(int id) {
-        String sql = "DELETE FROM fotos_entrada WHERE id = ?";
-
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setInt(1, id);
-            return statement.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar foto: " + e.getMessage());
-            return false;
-        }
-    }
-
+    /**
+     * Busca una foto específica por su ID.
+     *
+     * @param id ID de la foto que se desea consultar.
+     * @return Objeto FotoEntrada correspondiente, o null si no se encuentra.
+     */
     public FotoEntrada buscarPorId(int id) {
         String sql = "SELECT * FROM fotos_entrada WHERE id = ?";
 
@@ -96,4 +100,24 @@ public class FotoEntradaDAO {
         return null;
     }
 
+    /**
+     * Elimina una foto de la base de datos por su ID.
+     *
+     * @param id ID de la foto que se desea eliminar.
+     * @return true si se eliminó correctamente, false en caso contrario.
+     */
+    public boolean eliminar(int id) {
+        String sql = "DELETE FROM fotos_entrada WHERE id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+            return statement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar foto: " + e.getMessage());
+            return false;
+        }
+    }
 }

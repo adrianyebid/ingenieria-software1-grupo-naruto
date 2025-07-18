@@ -5,9 +5,6 @@ import bogotravel.model.Entrada;
 import bogotravel.sesion.SesionActual;
 import bogotravel.service.FotoEntradaService;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -17,31 +14,66 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controlador de la vista para crear o editar una entrada del diario de viaje.
+ */
 public class CrearEntradaController {
 
+    // === Componentes de la interfaz gráfica (inyectados con FXML) ===
     @FXML
     private TextField tituloField;
+
     @FXML
     private TextArea contenidoArea;
+
     @FXML
     private DatePicker fechaPicker;
+
     @FXML
     private TextField lugarField;
+
     @FXML
     private ListView<String> listaFotos;
 
-    private Entrada entradaActual;
+    // === Atributos de lógica de negocio ===
+    private Entrada entradaActual; // Entrada en edición (null si es nueva)
 
-    private List<File> archivosFotos = new ArrayList<>();
-    private final EntradaDAO entradaDAO = new EntradaDAO();
-    private final FotoEntradaService fotoService = new FotoEntradaService();
+    private final List<File> archivosFotos = new ArrayList<>(); // Archivos seleccionados por el usuario
 
-    private boolean entradaGuardada = false;
+    private final EntradaDAO entradaDAO = new EntradaDAO(); // DAO para interactuar con la base de datos
+    private final FotoEntradaService fotoService = new FotoEntradaService(); // Servicio para guardar fotos
 
+    private boolean entradaGuardada = false; // Indica si la entrada fue guardada exitosamente
+
+    // === Getter público ===
+
+    /**
+     * Indica si la entrada fue guardada correctamente (se usa para verificar en otras vistas).
+     */
     public boolean isEntradaGuardada() {
         return entradaGuardada;
     }
 
+    // === Métodos públicos ===
+
+    /**
+     * Carga los datos de una entrada existente en los campos del formulario (modo edición).
+     *
+     * @param entrada Entrada a editar
+     */
+    public void cargarEntrada(Entrada entrada) {
+        this.entradaActual = entrada;
+        tituloField.setText(entrada.getTitulo());
+        contenidoArea.setText(entrada.getContenido());
+        fechaPicker.setValue(entrada.getFechaVisita());
+        lugarField.setText(entrada.getLugarDescripcion());
+    }
+
+    // === Métodos FXML (acciones de la interfaz) ===
+
+    /**
+     * Permite al usuario seleccionar una imagen de su sistema para añadirla a la entrada.
+     */
     @FXML
     public void agregarFoto() {
         FileChooser fileChooser = new FileChooser();
@@ -57,24 +89,34 @@ public class CrearEntradaController {
         }
     }
 
+    /**
+     * Guarda una nueva entrada o actualiza una existente.
+     * También guarda las imágenes asociadas a la entrada.
+     */
     @FXML
     public void guardarEntrada() {
+        // Obtener valores del formulario
         String titulo = tituloField.getText();
         String contenido = contenidoArea.getText();
         LocalDate fecha = fechaPicker.getValue();
         String lugar = lugarField.getText();
 
+        // Validación básica
         if (titulo.isEmpty() || contenido.isEmpty() || fecha == null) {
             new Alert(Alert.AlertType.WARNING, "Por favor complete todos los campos obligatorios.").showAndWait();
             return;
         }
+        // Validar que la fecha no sea futura
+        if (fecha.isAfter(LocalDate.now())) {
+            new Alert(Alert.AlertType.WARNING, "La fecha no puede ser futura.").showAndWait();
+            return;
+        }
 
         String emailUsuario = SesionActual.getUsuario().getEmail();
-
         boolean operacionExitosa;
 
         if (entradaActual != null) {
-            // ✏️ Estamos editando
+            // ✏ Modo edición: actualizamos entrada existente
             entradaActual.setTitulo(titulo);
             entradaActual.setContenido(contenido);
             entradaActual.setFechaVisita(fecha);
@@ -88,14 +130,14 @@ public class CrearEntradaController {
             }
 
         } else {
-            //  Estamos creando
+            //  Modo creación: creamos nueva entrada
             Entrada nuevaEntrada = new Entrada(titulo, contenido, fecha, lugar, emailUsuario);
             operacionExitosa = entradaDAO.crear(nuevaEntrada);
 
             // Si se creó correctamente, obtener el ID para guardar las fotos
             if (operacionExitosa) {
                 List<Entrada> entradasUsuario = entradaDAO.listarPorUsuario(emailUsuario);
-                int entradaId = entradasUsuario.get(0).getId(); // La más reciente
+                int entradaId = entradasUsuario.get(0).getId(); // Se asume que es la más reciente
 
                 for (File foto : archivosFotos) {
                     fotoService.guardarFoto(foto, emailUsuario, entradaId);
@@ -103,11 +145,12 @@ public class CrearEntradaController {
             }
         }
 
-
+        // Mostrar resultado de la operación
         if (operacionExitosa) {
-            entradaGuardada = true; // ✅ Aquí indicamos que se guardó correctamente
+            entradaGuardada = true;
             new Alert(Alert.AlertType.INFORMATION, "Entrada guardada exitosamente.").showAndWait();
 
+            // Cerrar ventana actual
             Stage stage = (Stage) tituloField.getScene().getWindow();
             stage.close();
         } else {
@@ -115,16 +158,12 @@ public class CrearEntradaController {
         }
     }
 
+    // === Métodos privados ===
 
-    public void cargarEntrada(Entrada entrada) {
-        this.entradaActual = entrada;
-        tituloField.setText(entrada.getTitulo());
-        contenidoArea.setText(entrada.getContenido());
-        fechaPicker.setValue(entrada.getFechaVisita());
-        lugarField.setText(entrada.getLugarDescripcion());
-    }
-
-
+    /**
+     * Limpia todos los campos del formulario y reinicia el estado del controlador.
+     * (Actualmente no se llama desde ningún lugar, pero puede usarse para resetear el formulario si se desea).
+     */
     private void limpiarFormulario() {
         tituloField.clear();
         contenidoArea.clear();

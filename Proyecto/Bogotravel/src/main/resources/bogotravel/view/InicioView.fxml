@@ -17,10 +17,10 @@
             <Button id="VerEntradaButton" onAction="#verEntradas" prefHeight="25.0" prefWidth="150.0" text="Ver entradas" />
             <Button id="EntradaButton" onAction="#abrirFormularioEntrada" prefHeight="25.0" prefWidth="150.0" text="Crear entrada" />
             <Button id="VerPorVisitarButton" onAction="#verPorVisitar" prefHeight="25.0" prefWidth="150.0" text="Ver por visitar" />
-            <Button id="PorVisitarButton" prefHeight="25.0" prefWidth="150.0" text="Añadir lugar" />
-            <Button id="PerfilButton" prefHeight="25.0" prefWidth="149.0" text="Ver perfil" />
-            <Button id="CerrarButton" fx:id="CerrarButton" onAction="#cerrarSesion" prefHeight="25.0" prefWidth="149.0" text="Cerrar sesión" />
+            <Button id="PerfilButton" prefHeight="25.0" prefWidth="150.0" text="Ver perfil" />
+            <Button id="CerrarButton" fx:id="CerrarButton" onAction="#cerrarSesion" prefHeight="25.0" prefWidth="150.0" text="Cerrar sesión" />
         </VBox>
+
     </left>
     <center>
         <VBox spacing="10" style="-fx-padding: 20;">
