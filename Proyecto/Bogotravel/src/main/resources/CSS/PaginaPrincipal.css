@@ -1,4 +1,4 @@
-#LugaresButton,#VerEntradaButton, #VerLugarButton, #PorVisitarButton,#EntradaButton,#PerfilButton,#CerrarButton {
+#LugaresButton,#VerEntradaButton, #VerLugarButton, #PorVisitarButton,#EntradaButton,#PerfilButton,#CerrarButton,#VerPorVisitarButton {
     -fx-background-color:  #0b5563;
     -fx-text-fill: #ffffff;
     -fx-font-family: "Rockwell Condensed";
@@ -12,7 +12,7 @@
 }
 
 /* Hover */
-#LugaresButton:hover, #PorVisitarButton:hover,#VerEntradaButton:hover, #VerLugarButton:hover, #EntradaButton:hover, #PerfilButton:hover, #CerrarButton:hover {
+#LugaresButton:hover, #PorVisitarButton:hover,#VerEntradaButton:hover, #VerLugarButton:hover, #EntradaButton:hover, #PerfilButton:hover, #VerPorVisitarButton:hover, #CerrarButton:hover {
     -fx-background-color: #c38523;
 }
 
@@ -33,7 +33,7 @@
 }
 
 /* Presionado - ambos botones */
-#LugaresButton:pressed, #PorVisitarButton:pressed, #VerEntradaButton:pressed, #VerLugarButton:pressed, #EntradaButton:pressed, #PerfilButton:pressed, #CerrarButton:pressed {
+#LugaresButton:pressed, #PorVisitarButton:pressed,#VerPorVisitarButton:pressed, #VerEntradaButton:pressed, #VerLugarButton:pressed, #EntradaButton:pressed, #PerfilButton:pressed, #CerrarButton:pressed {
     -fx-background-color: #ffb300;
     -fx-scale-x: 0.95;
     -fx-scale-y: 0.95;

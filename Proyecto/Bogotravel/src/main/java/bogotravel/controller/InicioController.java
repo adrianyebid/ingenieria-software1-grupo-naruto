@@ -2,9 +2,11 @@ package bogotravel.controller;
 
 import bogotravel.dao.EntradaDAO;
 import bogotravel.dao.LugarTuristicoDAO;
+import bogotravel.dao.PorVisitarDAO;
 import bogotravel.model.Entrada;
 import bogotravel.model.LugarTuristico;
 import bogotravel.service.FotoEntradaService;
+import bogotravel.utils.PorVisitarInfo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -279,5 +281,59 @@ public class InicioController {
             lugaresContainer.getChildren().add(crearVistaEntrada(entrada));
         }
     }
+
+    @FXML
+    private void verPorVisitar() {
+        lugaresContainer.getChildren().clear();
+
+        PorVisitarDAO dao = new PorVisitarDAO();
+        String email = SesionActual.getUsuario().getEmail();
+
+        List<PorVisitarInfo> lista = dao.listarConNombrePorUsuario(email);
+
+        for (PorVisitarInfo info : lista) {
+            VBox tarjeta = new VBox(10);
+            tarjeta.setStyle("-fx-background-color: #FDFEFE; -fx-padding: 15; -fx-background-radius: 10; -fx-border-color: #BFC9CA; -fx-border-radius: 10;");
+
+            Label nombre = new Label(info.getNombreLugar());
+            nombre.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+            String prioridadTexto;
+            switch (info.getPrioridad()) {
+                case 1:
+                    prioridadTexto = "Alta";
+                    break;
+                case 2:
+                    prioridadTexto = "Media";
+                    break;
+                case 3:
+                    prioridadTexto = "Baja";
+                    break;
+                default:
+                    prioridadTexto = "Desconocida";
+            }
+
+            Label prioridad = new Label("Prioridad: " + prioridadTexto);
+            Label recordatorio = new Label("Recordatorio: " + (info.getRecordatorio() != null ? info.getRecordatorio().toString() : "No asignado"));
+
+            Button eliminarBtn = new Button("Eliminar");
+            eliminarBtn.setStyle("-fx-background-color: #E74C3C; -fx-text-fill: white; -fx-font-weight: bold;");
+            eliminarBtn.setOnAction(e -> {
+                dao.eliminar(info.getIdPorVisitar());
+                verPorVisitar(); // recargar la lista después de eliminar
+            });
+
+            tarjeta.getChildren().addAll(nombre, prioridad, recordatorio, eliminarBtn);
+            lugaresContainer.getChildren().add(tarjeta);
+        }
+
+
+        if (lista.isEmpty()) {
+            Label vacio = new Label("No hay lugares por visitar.");
+            vacio.setStyle("-fx-font-size: 16px; -fx-text-fill: #888;");
+            lugaresContainer.getChildren().add(vacio);
+        }
+    }
+
 
 }

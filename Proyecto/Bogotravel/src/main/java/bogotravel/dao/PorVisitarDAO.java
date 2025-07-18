@@ -64,12 +64,11 @@ public class PorVisitarDAO {
     public List<PorVisitarInfo> listarConNombrePorUsuario(String emailUsuario) {
         List<PorVisitarInfo> lista = new ArrayList<>();
 
-        String sql = "SELECT lt.nombre AS lugar_nombre, pv.prioridad, pv.recordatorio "
+        String sql = "SELECT pv.id AS id_por_visitar, lt.nombre AS lugar_nombre, pv.prioridad, pv.recordatorio "
                 + "FROM por_visitar pv "
                 + "JOIN lugares_turisticos lt ON pv.id_lugar = lt.id "
                 + "WHERE pv.email_usuario = ? "
                 + "ORDER BY pv.prioridad ASC;";
-
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -78,11 +77,12 @@ public class PorVisitarDAO {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
+                int id = resultSet.getInt("id_por_visitar");
                 String nombreLugar = resultSet.getString("lugar_nombre");
                 int prioridad = resultSet.getInt("prioridad");
                 LocalDate recordatorio = resultSet.getDate("recordatorio").toLocalDate();
 
-                lista.add(new PorVisitarInfo(nombreLugar, prioridad, recordatorio));
+                lista.add(new PorVisitarInfo(id, nombreLugar, prioridad, recordatorio));
             }
 
         } catch (SQLException e) {
@@ -91,6 +91,7 @@ public class PorVisitarDAO {
 
         return lista;
     }
+
 
     // Eliminar un lugar de la lista
     public boolean eliminar(int id) {
@@ -123,5 +124,7 @@ public class PorVisitarDAO {
         }
         return false;
     }
+
+
 
 }
