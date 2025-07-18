@@ -18,25 +18,34 @@ public class EntradaDAO {
      * Inserta una nueva entrada en la base de datos.
      *
      * @param entrada Objeto Entrada a insertar.
-     * @return true si se insertó correctamente, false en caso de error.
+     * @return ID de la entrada creada, o -1 si hubo error.
      */
-    public boolean crear(Entrada entrada) {
+    // In EntradaDAO.java
+    public int crear(Entrada entrada) {
         String sql = "INSERT INTO entradas (titulo, contenido, fecha_visita, lugar_descripcion, email_usuario) VALUES (?, ?, ?, ?, ?)";
-
         try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, entrada.getTitulo());
             statement.setString(2, entrada.getContenido());
             statement.setDate(3, Date.valueOf(entrada.getFechaVisita()));
-            statement.setString(4, entrada.getLugarDescripcion()); // puede ser null
+            statement.setString(4, entrada.getLugarDescripcion());
             statement.setString(5, entrada.getEmailUsuario());
 
-            return statement.executeUpdate() > 0;
-
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                return -1;
+            }
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    return -1;
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Error al crear entrada: " + e.getMessage());
-            return false;
+            return -1;
         }
     }
 

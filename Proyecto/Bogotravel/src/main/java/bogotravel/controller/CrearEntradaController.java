@@ -130,15 +130,13 @@ public class CrearEntradaController {
             }
 
         } else {
-            //  Modo creación: creamos nueva entrada
+            // Modo creación: creamos nueva entrada
             Entrada nuevaEntrada = new Entrada(titulo, contenido, fecha, lugar, emailUsuario);
-            operacionExitosa = entradaDAO.crear(nuevaEntrada);
+            int entradaId = entradaDAO.crear(nuevaEntrada);
+            operacionExitosa = entradaId != -1;
 
-            // Si se creó correctamente, obtener el ID para guardar las fotos
+            // Si se creó correctamente, guardar las fotos con el ID correcto
             if (operacionExitosa) {
-                List<Entrada> entradasUsuario = entradaDAO.listarPorUsuario(emailUsuario);
-                int entradaId = entradasUsuario.get(0).getId(); // Se asume que es la más reciente
-
                 for (File foto : archivosFotos) {
                     fotoService.guardarFoto(foto, emailUsuario, entradaId);
                 }
