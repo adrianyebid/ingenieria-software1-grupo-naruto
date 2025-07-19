@@ -1,4 +1,4 @@
-package bogotravel.service;
+package bogotravel.utils;
 
 import bogotravel.dao.FotoEntradaDAO;
 import bogotravel.model.FotoEntrada;

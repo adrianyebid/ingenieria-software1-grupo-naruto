@@ -6,7 +6,7 @@ import bogotravel.dao.PorVisitarDAO;
 import bogotravel.model.Entrada;
 import bogotravel.model.LugarTuristico;
 import bogotravel.model.Usuario;
-import bogotravel.service.FotoEntradaService;
+import bogotravel.utils.FotoEntradaService;
 import bogotravel.sesion.SesionActual;
 import bogotravel.utils.PorVisitarInfo;
 import java.io.File;

@@ -2,7 +2,7 @@ package bogotravel.controller;
 
 import bogotravel.dao.EntradaDAO;
 import bogotravel.model.Entrada;
-import bogotravel.service.FotoEntradaService;
+import bogotravel.utils.FotoEntradaService;
 import bogotravel.sesion.SesionActual;
 import java.io.File;
 import java.time.LocalDate;
