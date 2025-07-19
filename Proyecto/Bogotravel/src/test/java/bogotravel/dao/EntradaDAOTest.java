@@ -1,82 +1,161 @@
 package bogotravel.dao;
 
+import bogotravel.db.DBConnection;
 import bogotravel.model.Entrada;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class EntradaDAOTest {
+public class EntradaDAOTest {
 
-    private static final String EMAIL_TEST = "ana@example.com";
-    private static EntradaDAO dao;
-    private static int idCreado;
+    private Connection connection;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
+    private EntradaDAO dao;
 
-    @BeforeAll
-    static void setup() {
+    @BeforeEach
+    public void setUp() throws Exception {
+        connection = mock(Connection.class);
+        statement = mock(PreparedStatement.class);
+        resultSet = mock(ResultSet.class);
         dao = new EntradaDAO();
     }
 
     @Test
-    @Order(1)
-    void testCrearEntrada() {
-        Entrada entrada = new Entrada(
-                "Test Entrada",
-                "Contenido de prueba",
-                LocalDate.now(),
-                "Descripción de lugar",
-                EMAIL_TEST
-        );
+    public void testCrear_exito() throws Exception {
+        Entrada entrada = new Entrada(0, "Título", "Contenido", LocalDate.now(), "Lugar", "correo@test.com");
 
-        boolean creada = dao.crear(entrada);
-        assertTrue(creada, "La entrada debe ser creada correctamente");
+        try (MockedStatic<DBConnection> dbMock = mockStatic(DBConnection.class)) {
+            dbMock.when(DBConnection::getConnection).thenReturn(connection);
+            when(connection.prepareStatement(anyString(), eq(Statement.RETURN_GENERATED_KEYS))).thenReturn(statement);
+            when(statement.executeUpdate()).thenReturn(1);
+            when(statement.getGeneratedKeys()).thenReturn(resultSet);
+            when(resultSet.next()).thenReturn(true);
+            when(resultSet.getInt(1)).thenReturn(42);
 
-        // Guardar ID creado
-        List<Entrada> entradas = dao.listarPorUsuario(EMAIL_TEST);
-        idCreado = entradas.get(0).getId();
+            int id = dao.crear(entrada);
+
+            assertEquals(42, id);
+        }
     }
 
     @Test
-    @Order(2)
-    void testListarEntradas() {
-        List<Entrada> entradas = dao.listarPorUsuario(EMAIL_TEST);
-        assertFalse(entradas.isEmpty(), "Debe haber al menos una entrada para el usuario");
+    public void testCrear_falla() throws Exception {
+        Entrada entrada = new Entrada(0, "Título", "Contenido", LocalDate.now(), "Lugar", "correo@test.com");
+
+        try (MockedStatic<DBConnection> dbMock = mockStatic(DBConnection.class)) {
+            dbMock.when(DBConnection::getConnection).thenThrow(new SQLException("Error DB"));
+
+            int id = dao.crear(entrada);
+
+            assertEquals(-1, id);
+        }
     }
 
     @Test
-    @Order(3)
-    void testBuscarPorId() {
-        Entrada entrada = dao.buscarPorId(idCreado);
-        assertNotNull(entrada, "Debe encontrarse la entrada por su ID");
-        assertEquals("Test Entrada", entrada.getTitulo(), "El título debe coincidir");
+    public void testListarPorUsuario() throws Exception {
+        String email = "test@correo.com";
+
+        try (MockedStatic<DBConnection> dbMock = mockStatic(DBConnection.class)) {
+            dbMock.when(DBConnection::getConnection).thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
+
+            when(resultSet.next()).thenReturn(true, false);
+            when(resultSet.getInt("id")).thenReturn(1);
+            when(resultSet.getString("titulo")).thenReturn("Título");
+            when(resultSet.getString("contenido")).thenReturn("Contenido");
+            when(resultSet.getDate("fecha_visita")).thenReturn(Date.valueOf(LocalDate.now()));
+            when(resultSet.getString("lugar_descripcion")).thenReturn("Lugar");
+            when(resultSet.getString("email_usuario")).thenReturn(email);
+
+            List<Entrada> entradas = dao.listarPorUsuario(email);
+
+            assertEquals(1, entradas.size());
+            assertEquals("Título", entradas.get(0).getTitulo());
+        }
     }
 
     @Test
-    @Order(4)
-    void testActualizarEntrada() {
-        Entrada entrada = dao.buscarPorId(idCreado);
-        assertNotNull(entrada);
+    public void testBuscarPorId_encontrado() throws Exception {
+        try (MockedStatic<DBConnection> dbMock = mockStatic(DBConnection.class)) {
+            dbMock.when(DBConnection::getConnection).thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
 
-        entrada.setTitulo("Entrada Actualizada");
-        entrada.setContenido("Contenido actualizado");
+            when(resultSet.next()).thenReturn(true);
+            when(resultSet.getInt("id")).thenReturn(1);
+            when(resultSet.getString("titulo")).thenReturn("Título");
+            when(resultSet.getString("contenido")).thenReturn("Contenido");
+            when(resultSet.getDate("fecha_visita")).thenReturn(Date.valueOf(LocalDate.now()));
+            when(resultSet.getString("lugar_descripcion")).thenReturn("Lugar");
+            when(resultSet.getString("email_usuario")).thenReturn("correo@test.com");
 
-        boolean actualizada = dao.actualizar(entrada);
-        assertTrue(actualizada, "La entrada debe actualizarse correctamente");
+            Entrada entrada = dao.buscarPorId(1);
 
-        Entrada actualizadaDB = dao.buscarPorId(idCreado);
-        assertEquals("Entrada Actualizada", actualizadaDB.getTitulo());
+            assertNotNull(entrada);
+            assertEquals(1, entrada.getId());
+        }
     }
 
     @Test
-    @Order(5)
-    void testEliminarEntrada() {
-        boolean eliminada = dao.eliminar(idCreado);
-        assertTrue(eliminada, "La entrada debe eliminarse correctamente");
+    public void testBuscarPorId_noEncontrado() throws Exception {
+        try (MockedStatic<DBConnection> dbMock = mockStatic(DBConnection.class)) {
+            dbMock.when(DBConnection::getConnection).thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeQuery()).thenReturn(resultSet);
 
-        Entrada entrada = dao.buscarPorId(idCreado);
-        assertNull(entrada, "La entrada debe haber sido eliminada");
+            when(resultSet.next()).thenReturn(false);
+
+            Entrada entrada = dao.buscarPorId(999);
+
+            assertNull(entrada);
+        }
+    }
+
+    @Test
+    public void testActualizar_exito() throws Exception {
+        Entrada entrada = new Entrada(1, "Nuevo Título", "Nuevo contenido", LocalDate.now(), "Lugar nuevo", "email@test.com");
+
+        try (MockedStatic<DBConnection> dbMock = mockStatic(DBConnection.class)) {
+            dbMock.when(DBConnection::getConnection).thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeUpdate()).thenReturn(1);
+
+            boolean actualizado = dao.actualizar(entrada);
+
+            assertTrue(actualizado);
+        }
+    }
+
+    @Test
+    public void testEliminar_exito() throws Exception {
+        try (MockedStatic<DBConnection> dbMock = mockStatic(DBConnection.class)) {
+            dbMock.when(DBConnection::getConnection).thenReturn(connection);
+            when(connection.prepareStatement(anyString())).thenReturn(statement);
+            when(statement.executeUpdate()).thenReturn(1);
+
+            boolean eliminado = dao.eliminar(1);
+
+            assertTrue(eliminado);
+        }
+    }
+
+    @Test
+    public void testEliminar_falla() throws Exception {
+        try (MockedStatic<DBConnection> dbMock = mockStatic(DBConnection.class)) {
+            dbMock.when(DBConnection::getConnection).thenThrow(new SQLException("Falla"));
+
+            boolean eliminado = dao.eliminar(1);
+
+            assertFalse(eliminado);
+        }
     }
 }

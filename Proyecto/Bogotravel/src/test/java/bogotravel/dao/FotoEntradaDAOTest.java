@@ -1,80 +1,101 @@
 package bogotravel.dao;
 
-import bogotravel.model.Entrada;
+import bogotravel.db.DBConnection;
 import bogotravel.model.FotoEntrada;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
-import java.time.LocalDate;
+import java.sql.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class FotoEntradaDAOTest {
+public class FotoEntradaDAOTest {
 
-    private static EntradaDAO entradaDAO;
-    private static FotoEntradaDAO fotoDAO;
-    private static int entradaId;
-    private static int fotoId;
+    private Connection mockConnection;
+    private PreparedStatement mockStatement;
+    private ResultSet mockResultSet;
 
-    private static final String EMAIL_TEST = "ana@example.com";
-
-    @BeforeAll
-    static void setup() {
-        entradaDAO = new EntradaDAO();
-        fotoDAO = new FotoEntradaDAO();
-
-        // Creamos una entrada de prueba para asociarle la(s) foto(s)
-        Entrada entrada = new Entrada(
-                "Entrada con foto",
-                "Contenido con foto",
-                LocalDate.now(),
-                "Lugar de prueba con foto",
-                EMAIL_TEST
-        );
-
-        boolean creada = entradaDAO.crear(entrada);
-        assertTrue(creada, "Debe poder crearse la entrada para la foto");
-
-        // Recuperamos la entrada recién creada (asumimos que está al principio)
-        List<Entrada> entradas = entradaDAO.listarPorUsuario(EMAIL_TEST);
-        entradaId = entradas.get(0).getId();
+    @BeforeEach
+    public void setUp() throws Exception {
+        mockConnection = mock(Connection.class);
+        mockStatement = mock(PreparedStatement.class);
+        mockResultSet = mock(ResultSet.class);
     }
 
     @Test
-    @Order(1)
-    void testGuardarFoto() {
-        FotoEntrada foto = new FotoEntrada(entradaId, "fotos/ana/entrada-test/foto1.jpg");
-        boolean guardada = fotoDAO.guardarFoto(foto);
-        assertTrue(guardada, "Debe guardarse la foto asociada a la entrada");
+    public void testGuardarFoto() throws Exception {
+        FotoEntrada foto = new FotoEntrada(0, 1, "ruta/ejemplo.jpg");
 
-        // Guardamos ID para otras pruebas
-        List<FotoEntrada> fotos = fotoDAO.listarPorEntrada(entradaId);
-        assertFalse(fotos.isEmpty(), "Debe haber al menos una foto asociada");
-        fotoId = fotos.get(0).getId();
+        try (MockedStatic<DBConnection> mockedStatic = mockStatic(DBConnection.class)) {
+            mockedStatic.when(DBConnection::getConnection).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+            when(mockStatement.executeUpdate()).thenReturn(1);
+
+            FotoEntradaDAO dao = new FotoEntradaDAO();
+            boolean resultado = dao.guardarFoto(foto);
+
+            assertTrue(resultado);
+            verify(mockStatement).setInt(1, 1);
+            verify(mockStatement).setString(2, "ruta/ejemplo.jpg");
+        }
     }
 
     @Test
-    @Order(2)
-    void testListarFotosPorEntrada() {
-        List<FotoEntrada> fotos = fotoDAO.listarPorEntrada(entradaId);
-        assertFalse(fotos.isEmpty(), "Debe listar las fotos asociadas a la entrada");
-        assertEquals("fotos/ana/entrada-test/foto1.jpg", fotos.get(0).getRuta());
+    public void testListarPorEntrada() throws Exception {
+        try (MockedStatic<DBConnection> mockedStatic = mockStatic(DBConnection.class)) {
+            mockedStatic.when(DBConnection::getConnection).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+            when(mockStatement.executeQuery()).thenReturn(mockResultSet);
+
+            when(mockResultSet.next()).thenReturn(true, false);
+            when(mockResultSet.getInt("id")).thenReturn(1);
+            when(mockResultSet.getInt("entrada_id")).thenReturn(2);
+            when(mockResultSet.getString("ruta")).thenReturn("ruta/foto.jpg");
+
+            FotoEntradaDAO dao = new FotoEntradaDAO();
+            List<FotoEntrada> lista = dao.listarPorEntrada(2);
+
+            assertEquals(1, lista.size());
+            assertEquals("ruta/foto.jpg", lista.get(0).getRuta());
+        }
     }
 
     @Test
-    @Order(3)
-    void testEliminarFoto() {
-        boolean eliminada = fotoDAO.eliminar(fotoId);
-        assertTrue(eliminada, "Debe eliminarse la foto correctamente");
+    public void testBuscarPorId() throws Exception {
+        try (MockedStatic<DBConnection> mockedStatic = mockStatic(DBConnection.class)) {
+            mockedStatic.when(DBConnection::getConnection).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+            when(mockStatement.executeQuery()).thenReturn(mockResultSet);
 
-        List<FotoEntrada> fotos = fotoDAO.listarPorEntrada(entradaId);
-        assertTrue(fotos.isEmpty(), "No debe haber fotos asociadas después de eliminar");
+            when(mockResultSet.next()).thenReturn(true);
+            when(mockResultSet.getInt("id")).thenReturn(1);
+            when(mockResultSet.getInt("entrada_id")).thenReturn(5);
+            when(mockResultSet.getString("ruta")).thenReturn("imagen.jpg");
+
+            FotoEntradaDAO dao = new FotoEntradaDAO();
+            FotoEntrada foto = dao.buscarPorId(1);
+
+            assertNotNull(foto);
+            assertEquals(5, foto.getEntradaId());
+            assertEquals("imagen.jpg", foto.getRuta());
+        }
     }
 
-    @AfterAll
-    static void cleanup() {
-        // Limpiar la entrada de prueba
-        entradaDAO.eliminar(entradaId);
+    @Test
+    public void testEliminar() throws Exception {
+        try (MockedStatic<DBConnection> mockedStatic = mockStatic(DBConnection.class)) {
+            mockedStatic.when(DBConnection::getConnection).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+            when(mockStatement.executeUpdate()).thenReturn(1);
+
+            FotoEntradaDAO dao = new FotoEntradaDAO();
+            boolean resultado = dao.eliminar(1);
+
+            assertTrue(resultado);
+            verify(mockStatement).setInt(1, 1);
+        }
     }
 }

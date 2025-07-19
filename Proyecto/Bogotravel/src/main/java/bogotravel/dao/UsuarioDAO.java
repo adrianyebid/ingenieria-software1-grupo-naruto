@@ -13,7 +13,6 @@ import java.sql.SQLException;
  * Clase DAO para manejar operaciones de base de datos relacionadas con usuarios.
  */
 public class UsuarioDAO {
-
     /**
      * Registra un nuevo usuario en la base de datos.
      * La contraseña se almacena en formato hasheado con BCrypt.
@@ -37,7 +36,7 @@ public class UsuarioDAO {
             int filas = statement.executeUpdate();
             return filas > 0;
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Error al registrar usuario: " + e.getMessage());
             return false;
         }
