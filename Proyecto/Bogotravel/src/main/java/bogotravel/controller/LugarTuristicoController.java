@@ -1,4 +1,3 @@
 package bogotravel.controller;
 
-public class LugarTuristicoController {
-}
+public class LugarTuristicoController {}
