@@ -13,6 +13,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * PorVisitarDAOTest.java
+ * Unit tests for the PorVisitarDAO class.
+ *
+ * These tests verify the correct implementation of CRUD methods for the 'por_visitar' table.
+ *
+ * Test coverage:
+ * - testAgregar: Verifies successful addition of a visit item.
+ * - testYaExiste: Checks if a visit item already exists for a user and place.
+ * - testEliminar: Verifies successful deletion of a visit item by ID.
+ * - testListarPorUsuario: Lists all visit items for a specific user.
+ */
 public class PorVisitarDAOTest {
 
     private Connection mockConnection;

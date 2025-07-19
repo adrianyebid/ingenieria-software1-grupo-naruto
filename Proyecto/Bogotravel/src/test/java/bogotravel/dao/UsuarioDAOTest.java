@@ -15,8 +15,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Pruebas unitarias para UsuarioDAO.
- * Se utilizan mocks para evitar dependencia de una base de datos real.
+ * UsuarioDAOTest.java
+ * Unit tests for the UsuarioDAO class.
+ *
+ * These tests verify the correct implementation of CRUD methods for the 'usuarios' table.
+ *
+ * Test coverage:
+ * - testRegistrarUsuarioExitoso: Verifies successful registration of a user.
+ * - testRegistrarUsuarioFallaPorExcepcion: Verifies that an exception during registration returns false.
+ * - testBuscarPorEmailUsuarioEncontrado: Verifies that a user can be found by email.
+ * - testBuscarPorEmailUsuarioNoExiste: Verifies that searching for a non-existent user returns null.
+ * - testValidarCredencialesCorrectas: Verifies that valid credentials return true.
+ * - testValidarCredencialesIncorrectas: Verifies that invalid credentials return false.
+ * - testValidarCredencialesUsuarioNoExiste: Verifies that non-existent user credentials return false.
  */
 class UsuarioDAOTest {
 

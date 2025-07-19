@@ -12,6 +12,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+
+/**
+ * FotoEntradaDAOTest.java
+ * Unit tests for the FotoEntradaDAO class.
+ *
+ * These tests verify the correct implementation of CRUD methods for the 'foto_entrada' table.
+ *
+ * Test coverage:
+ * - testGuardarFoto: Verifies successful saving of a photo entry.
+ * - testListarPorEntrada: Verifies that photos are listed correctly for a given entry.
+ * - testBuscarPorId: Verifies that a photo can be found by its ID.
+ * - testEliminar: Verifies that a photo entry is deleted successfully.
+ */
 public class FotoEntradaDAOTest {
 
     private Connection mockConnection;

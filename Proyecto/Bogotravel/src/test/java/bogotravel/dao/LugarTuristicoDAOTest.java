@@ -13,6 +13,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+
+/**
+ * LugarTuristicoDAOTest.java
+ * Unit tests for the LugarTuristicoDAO class.
+ *
+ * These tests verify the correct implementation of CRUD methods for the 'lugares_turisticos' table.
+ *
+ * Test coverage:
+ * - testBuscarPorId_existe: Verifies that a tourist place can be found by its ID.
+ * - testInsertar_ok: Verifies successful insertion of a tourist place.
+ * - testInsertar_falla: Verifies that an error during insertion returns false.
+ * - testListarPorCategoriaYLocalidad_vacio: Verifies that no places are returned for a non-existent category and locality.
+ */
 class LugarTuristicoDAOTest {
 
     private Connection connection;

@@ -13,6 +13,23 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+
+/**
+ * EntradaDAOTest.java
+ * Unit tests for the EntradaDAO class.
+ *
+ * These tests verify the correct implementation of CRUD methods for the 'entradas' table.
+ *
+ * Test coverage:
+ * - testCrear_exito: Verifies successful creation of an entry and correct ID retrieval.
+ * - testCrear_falla: Verifies that a database error during creation returns -1.
+ * - testListarPorUsuario: Verifies that entries are listed correctly for a given user.
+ * - testBuscarPorId_encontrado: Verifies that an entry can be found by its ID.
+ * - testBuscarPorId_noEncontrado: Verifies that searching for a non-existent ID returns null.
+ * - testActualizar_exito: Verifies that an entry is updated successfully.
+ * - testEliminar_exito: Verifies that an entry is deleted successfully.
+ * - testEliminar_falla: Verifies that a database error during deletion returns false.
+ */
 public class EntradaDAOTest {
 
     private Connection connection;
